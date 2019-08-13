@@ -14,6 +14,17 @@ public class Area {
     //更新时间
     private Date laseEditTime;
 
+    @Override
+    public String toString() {
+        return "Area{" +
+                "areaId=" + areaId +
+                ", areaName='" + areaName + '\'' +
+                ", priority=" + priority +
+                ", createTime=" + createTime +
+                ", laseEditTime=" + laseEditTime +
+                '}';
+    }
+
     public Integer getAreaId() {
         return areaId;
     }
