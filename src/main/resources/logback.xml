@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
-<configuration debug="false">
+<configuration scan="true" scanPeriod="60" debug="false">
     <appender name="INFO-FILE"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${catalina.base}/webapps/myo2o/logs/info/info.log</file>
