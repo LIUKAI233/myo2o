@@ -3,7 +3,7 @@ package com.lk.o2o.service;
 import com.lk.o2o.dto.ShopExecution;
 import com.lk.o2o.entity.Shop;
 
-import java.io.File;
+import java.io.InputStream;
 
 public interface ShopService {
     /**
@@ -12,5 +12,5 @@ public interface ShopService {
      * @param shopImg
      * @return
      */
-    ShopExecution addShop(Shop shop, File shopImg);
+    ShopExecution addShop(Shop shop, InputStream shopImgInputStream,String filename);
 }

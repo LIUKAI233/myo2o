@@ -10,13 +10,16 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 public class ShopServiceTest extends BaseTest {
     @Autowired
     private ShopService shopService;
 
     @Test
-    public void testAddShop(){
+    public void testAddShop() throws FileNotFoundException {
         Shop shop = new Shop();
         Area area = new Area();
         PersonInfo owner = new PersonInfo();
@@ -30,7 +33,8 @@ public class ShopServiceTest extends BaseTest {
         shop.setShopCategory(shopCategory);
         shop.setOwner(owner);
         File shopImg = new File("F:\\test.jpg");
-        ShopExecution shopExecution = shopService.addShop(shop, shopImg);
+        InputStream is = new FileInputStream(shopImg);
+        ShopExecution shopExecution = shopService.addShop(shop,is, shopImg.getName());
         System.out.println(shopExecution.getShop().getShopId());
     }
 }

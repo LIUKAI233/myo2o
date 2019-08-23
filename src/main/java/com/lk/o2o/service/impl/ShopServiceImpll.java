@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
+import java.io.InputStream;
 import java.util.Date;
 
 @Service
@@ -21,7 +21,7 @@ public class ShopServiceImpll implements ShopService {
     @Autowired
     private ShopDao shopDao;
     @Override
-    public ShopExecution addShop(Shop shop, File shopImg) {
+    public ShopExecution addShop(Shop shop, InputStream shopImgInputStream,String fileName) {
         if(shop == null){
             return new ShopExecution(ShopStateEnum.NULL_SHOP);
         }
@@ -36,7 +36,7 @@ public class ShopServiceImpll implements ShopService {
         }else{
             try {
                 //创建图片保存位置，并保存图片路径
-                addShopImg(shop,shopImg);
+                addShopImg(shop,shopImgInputStream, fileName);
             }catch (Exception e){
                 throw new ShopOperationException("addShopImg ERROR"+e.getMessage());
             }
@@ -48,10 +48,11 @@ public class ShopServiceImpll implements ShopService {
         return new ShopExecution(ShopStateEnum.SUCCESS,shop);
     }
 
-    private void addShopImg(Shop shop,File shopImg) {
+    private void addShopImg(Shop shop, InputStream shopImgInputStream , String fileName) {
         //获取shop图片目录的相对路径
         String dest = FileUtil.getShopImagePath(shop.getShopId());
-        String shopImgAddr = ImageUtil.generateThumbnail(shopImg,dest);
+        //传入图片文件和图片所在相对路径
+        String shopImgAddr = ImageUtil.generateThumbnail(shopImgInputStream,dest,fileName);
         shop.setShopImg(shopImgAddr);
     }
 }
