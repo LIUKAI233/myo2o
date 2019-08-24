@@ -56,7 +56,7 @@ public class ShopManagementController {
         return modelMap;
     }
 
-    @RequestMapping(value = "/register",method = RequestMethod.POST)
+    @RequestMapping(value = "/registershop",method = RequestMethod.POST)
     @ResponseBody
     private Map<String,Object> register(HttpServletRequest request){
         Map<String, Object> modelMap = new HashMap<String,Object>();
