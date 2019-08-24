@@ -2,9 +2,13 @@ package com.lk.o2o.web.shopadmin;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lk.o2o.dto.ShopExecution;
+import com.lk.o2o.entity.Area;
 import com.lk.o2o.entity.PersonInfo;
 import com.lk.o2o.entity.Shop;
+import com.lk.o2o.entity.ShopCategory;
 import com.lk.o2o.enums.ShopStateEnum;
+import com.lk.o2o.service.AreaService;
+import com.lk.o2o.service.ShopCategoryService;
 import com.lk.o2o.service.ShopService;
 import com.lk.o2o.util.HttpServletRequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +22,9 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -26,11 +32,34 @@ import java.util.Map;
 public class ShopManagementController {
     @Autowired
     private ShopService shopService;
+    @Autowired
+    private AreaService areaService;
+    @Autowired
+    private ShopCategoryService shopCategoryService;
+
+    @RequestMapping(value = "getshopinitinfo",method = RequestMethod.GET)
+    @ResponseBody
+    private Map<String,Object> getshopinitinfo(HttpServletRequest request){
+        Map<String, Object> modelMap = new HashMap<>();
+        List<Area> areaList = new ArrayList<Area>();
+        List<ShopCategory> shopCategoryList = new ArrayList<ShopCategory>();
+        try {
+            areaList = areaService.getAreaList();
+            shopCategoryList = shopCategoryService.getShopCategory(new ShopCategory());
+            modelMap.put("success",true);
+            modelMap.put("areaList",areaList);
+            modelMap.put("shopCategoryList",shopCategoryList);
+        }catch (Exception e){
+            modelMap.put("success",false);
+            modelMap.put("errMsg",e.getMessage());
+        }
+        return modelMap;
+    }
 
     @RequestMapping(value = "/register",method = RequestMethod.POST)
     @ResponseBody
     private Map<String,Object> register(HttpServletRequest request){
-        Map<String, Object> modelMap = new HashMap<>();
+        Map<String, Object> modelMap = new HashMap<String,Object>();
         //接收并转化相应的参数，包含店铺信息和图片信息
         String shopStr = HttpServletRequestUtil.getString(request, "shopStr");
         // 使用jackson,把前端传过来的json数据封装到pojo中
