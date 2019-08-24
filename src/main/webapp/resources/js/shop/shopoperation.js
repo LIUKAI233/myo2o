@@ -1,8 +1,8 @@
 $(function () {
     var initUrl = "/myo2o/shopadmin/getshopinitinfo";
-    var registerShopUrl = "/myo2o/shopadmin/register";
-    shopinitinfo();
-    function shopinitinfo(){
+    var registerShopUrl = "/myo2o/shopadmin/registershop";
+    getShopinitinfo();
+    function getShopinitinfo(){
        $.getJSON(initUrl , function (date) {
           if (date.success){
               var tempHtml = "";
@@ -34,22 +34,24 @@ $(function () {
                    return !this.selected;
                }).data('id')
            };
-           var shopImg = $('#shop-img')[0].files[0];
-           var formData = new FormData();
-           formData.append('shopStr',JSON.stringify(shop));
+           alert(shop.shopCategory.shopCategoryId);
+           alert(shop.area.areaId);
+           var shopImg=$('#shop-img')[0].files[0];
+           var formData=new FormData();
            formData.append('shopImg',shopImg);
+           formData.append('shopStr',JSON.stringify(shop));
            $.ajax({
-               url : registerShopUrl,
-               type : 'POST',
-               data : formData,
-               contentType : false,
-               processdata : false,
-               cache : false,
-               success : function (data) {
+               url:registerShopUrl,
+               type:'POST',
+               data:formData,
+               contentType:false,
+               processData:false,
+               cache:false,
+               success:function(data){
                    if(data.success){
-                       $.toast('提交成功');
+                       $.toast('提交成功！');
                    }else{
-                       $.toast('提交失败'+data.errMsg);
+                       $.toast('提交失败！'+data.errMsg);
                    }
                }
            });
