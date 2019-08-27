@@ -10,6 +10,7 @@ import com.lk.o2o.enums.ShopStateEnum;
 import com.lk.o2o.service.AreaService;
 import com.lk.o2o.service.ShopCategoryService;
 import com.lk.o2o.service.ShopService;
+import com.lk.o2o.util.CodeUtil;
 import com.lk.o2o.util.HttpServletRequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -71,6 +72,12 @@ public class ShopManagementController {
         }catch (Exception e){
             modelMap.put("success",false);
             modelMap.put("errMsg",e.getMessage());
+            return modelMap;
+        }
+        //先判断传过来的验证码
+        if(CodeUtil.checkVerifyCode(request)){
+            modelMap.put("success",false);
+            modelMap.put("errMsg","请输入正确的验证码");
             return modelMap;
         }
         CommonsMultipartFile shopImg = null;

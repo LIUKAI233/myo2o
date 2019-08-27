@@ -2,6 +2,7 @@ $(function () {
     var initUrl = "/myo2o/shopadmin/getshopinitinfo";
     var registerShopUrl = "/myo2o/shopadmin/registershop";
     getShopinitinfo();
+    /*获取店铺类别和区域信息*/
     function getShopinitinfo(){
        $.getJSON(initUrl , function (date) {
           if (date.success){
@@ -19,13 +20,14 @@ $(function () {
        });
 
        $('#submit').click(function () {
+           /*创建店铺对象，并获取对应的店铺信息*/
            var shop = {};
            shop.shopName = $('#shop-name').val();
            shop.shopAddr = $('#shop-addr').val();
            shop.phone = $('#shop-phone').val();
            shop.shopDesc = $('#shop-desc').val();
-           shop.shopCategory={
-               shopCategoryId:$('#shop-category').find('option').not(function(){
+           /*shop.shopCategory={
+               shopCategoryId:$('#shop-Category').find('option').not(function(){
                    return !this.selected;
                }).data('id')
            };
@@ -33,11 +35,22 @@ $(function () {
                areaId:$('#area').find('option').not(function(){
                    return !this.selected;
                }).data('id')
-           };
-           alert(shop.shopCategory.shopCategoryId);
-           alert(shop.area.areaId);
+           };*/
+           /*获取选择的店铺类别和区域ID*/
+           var shopCategoryType = document.getElementById ("shop-category");
+           shop.shopCategory = shopCategoryType.options [shopCategoryType.selectedIndex].id;
+           var areaType = document.getElementById ("area");
+           shop.area = areaType.options [areaType.selectedIndex].id;
+
            var shopImg=$('#shop-img')[0].files[0];
+           var verifyCodeActul = $('#j-kaptcha').val();
+           if (verifyCodeActul == null || verifyCodeActul == ""){
+               $.toast('请输入验证码!');
+               return;
+           }
+           /*打包相关数据*/
            var formData=new FormData();
+           formData.append('verifyCodeActul',verifyCodeActul);
            formData.append('shopImg',shopImg);
            formData.append('shopStr',JSON.stringify(shop));
            $.ajax({
@@ -53,6 +66,7 @@ $(function () {
                    }else{
                        $.toast('提交失败！'+data.errMsg);
                    }
+                   $('#kaptcha_img').click();
                }
            });
        });
