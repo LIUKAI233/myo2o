@@ -18,7 +18,6 @@ $(function () {
               $('#area').html(tempAreaHtml);
           }
        });
-
        $('#submit').click(function () {
            /*创建店铺对象，并获取对应的店铺信息*/
            var shop = {};
@@ -26,22 +25,17 @@ $(function () {
            shop.shopAddr = $('#shop-addr').val();
            shop.phone = $('#shop-phone').val();
            shop.shopDesc = $('#shop-desc').val();
-           /*shop.shopCategory={
-               shopCategoryId:$('#shop-Category').find('option').not(function(){
-                   return !this.selected;
-               }).data('id')
-           };
-           shop.area={
-               areaId:$('#area').find('option').not(function(){
-                   return !this.selected;
-               }).data('id')
-           };*/
            /*获取选择的店铺类别和区域ID*/
            var shopCategoryType = document.getElementById ("shop-category");
-           shop.shopCategory = shopCategoryType.options [shopCategoryType.selectedIndex].id;
+           var shopCategoryId = shopCategoryType.options [shopCategoryType.selectedIndex].id;
            var areaType = document.getElementById ("area");
-           shop.area = areaType.options [areaType.selectedIndex].id;
-
+           var areaId = areaType.options [areaType.selectedIndex].id
+           var area = {};
+           var shopCategory = {};
+           area.areaId = areaId;
+           shopCategory.shopCategoryId = shopCategoryId;
+           shop.area = area;
+           shop.shopCategory = shopCategory;
            var shopImg=$('#shop-img')[0].files[0];
            var verifyCodeActul = $('#j-kaptcha').val();
            if (verifyCodeActul == null || verifyCodeActul == ""){
@@ -67,6 +61,7 @@ $(function () {
                        $.toast('提交失败！'+data.errMsg);
                    }
                    $('#kaptcha_img').click();
+                   document.getElementById("kaptcha_img").value="";
                }
            });
        });

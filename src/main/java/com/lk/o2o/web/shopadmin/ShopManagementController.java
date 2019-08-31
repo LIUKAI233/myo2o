@@ -94,7 +94,7 @@ public class ShopManagementController {
         if(shop != null && shopImg != null){
             //先自定义用户信息，后期从session获取
             PersonInfo owner = new PersonInfo();
-            owner.setUserId(1l);
+            owner.setUserId(8l);
             shop.setOwner(owner);
             ShopExecution shopExecution = null;
             try {
