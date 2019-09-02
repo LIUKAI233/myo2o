@@ -6,6 +6,7 @@ import com.lk.o2o.entity.Area;
 import com.lk.o2o.entity.PersonInfo;
 import com.lk.o2o.entity.Shop;
 import com.lk.o2o.entity.ShopCategory;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,6 +20,18 @@ public class ShopServiceTest extends BaseTest {
     private ShopService shopService;
 
     @Test
+    public void testUpdataShop() throws FileNotFoundException{
+        Shop shop = new Shop();
+        shop.setShopId(28);
+        shop.setShopName("更改店铺");
+        File shopImg = new File("F:\\new.jpg");
+        InputStream is = new FileInputStream(shopImg);
+        ShopExecution shopExecution = shopService.updataShop(shop, is, shopImg.getName());
+        System.out.println(shopExecution.getStateInfo());
+    }
+
+    @Test
+    @Ignore
     public void testAddShop() throws FileNotFoundException {
         Shop shop = new Shop();
         Area area = new Area();

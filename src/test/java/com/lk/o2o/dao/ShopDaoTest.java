@@ -5,6 +5,7 @@ import com.lk.o2o.entity.Area;
 import com.lk.o2o.entity.PersonInfo;
 import com.lk.o2o.entity.Shop;
 import com.lk.o2o.entity.ShopCategory;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -14,8 +15,15 @@ public class ShopDaoTest extends BaseTest {
     @Autowired
     private ShopDao shopDao;
 
+    @Test
+    public void testQueryByShopId(){
+        Integer shopId = 15;
+        Shop shop = shopDao.queryByShopId(shopId);
+        System.out.println("区域名称"+shop.getArea().getAreaName()+shop.getShopCategory().getShopCategoryName());
+    }
 
     @Test
+    @Ignore
     public void testInsertShop(){
         Shop shop = new Shop();
         Area area = new Area();

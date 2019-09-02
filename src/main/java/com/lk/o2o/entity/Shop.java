@@ -3,7 +3,7 @@ package com.lk.o2o.entity;
 import java.util.Date;
 
 public class Shop {
-    private Integer shopId;
+    private Long shopId;
     private String shopImg;
     private String shopName;
     private String shopDesc;
@@ -20,11 +20,11 @@ public class Shop {
     private PersonInfo owner;
     private ShopCategory shopCategory;
 
-    public Integer getShopId() {
+    public Long getShopId() {
         return shopId;
     }
 
-    public void setShopId(Integer shopId) {
+    public void setShopId(Long shopId) {
         this.shopId = shopId;
     }
 

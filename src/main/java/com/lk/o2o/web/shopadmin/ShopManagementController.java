@@ -38,6 +38,24 @@ public class ShopManagementController {
     @Autowired
     private ShopCategoryService shopCategoryService;
 
+    @RequestMapping(value = "getshopbyid",method = RequestMethod.GET)
+    @ResponseBody
+    private Map<String,Object> getShopById(HttpServletRequest request){
+        Map<String, Object> modelMap = new HashMap<>();
+        try{
+            long shopId = HttpServletRequestUtil.getLong(request, "shopId");
+            Shop shop = shopService.getShopById(shopId);
+            List<Area> areaList = areaService.getAreaList();
+            modelMap.put("shop",shop);
+            modelMap.put("areaList",areaList);
+            modelMap.put("success",true);
+        }catch (Exception e){
+            modelMap.put("success",false);
+            modelMap.put("errMsg",e.getMessage());
+        }
+        return modelMap;
+    }
+
     @RequestMapping(value = "getshopinitinfo",method = RequestMethod.GET)
     @ResponseBody
     private Map<String,Object> getshopinitinfo(HttpServletRequest request){

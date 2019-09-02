@@ -17,9 +17,43 @@ import java.util.Date;
 
 @Service
 @Transactional  //开启事务
-public class ShopServiceImpll implements ShopService {
+public class ShopServiceImpl implements ShopService {
     @Autowired
     private ShopDao shopDao;
+
+    @Override
+    public Shop getShopById(Long shopId) {
+        return shopDao.queryByShopId(shopId);
+    }
+
+    @Override
+    public ShopExecution updataShop(Shop shop, InputStream shopImgInputStream, String fileName) {
+        if(shop == null || shop.getShopId() == null){
+            return new ShopExecution(ShopStateEnum.NULL_SHOP);
+        }
+        try {
+            if(shopImgInputStream != null && fileName != null && !"".equals(fileName)){
+                //1.处理图片文件
+                Shop shopTemp = shopDao.queryByShopId(shop.getShopId());
+                if(shopTemp.getShopImg() != null) {
+                    FileUtil.deleteFile(shopTemp.getShopImg());
+                }
+                addShopImg(shop,shopImgInputStream, fileName);
+            }
+            //2.修改店铺信息
+            shop.setLastEditTime(new Date());
+            int effectedNum = shopDao.updateShop(shop);
+            if(effectedNum <= 0){
+                return new ShopExecution(ShopStateEnum.INNER_ERROR);
+            }else {
+                shop = shopDao.queryByShopId(shop.getShopId());
+                return new ShopExecution(ShopStateEnum.SUCCESS,shop);
+            }
+        }catch (Exception e){
+            throw new ShopOperationException("updataShop err:"+e.getMessage());
+        }
+    }
+
     @Override
     public ShopExecution addShop(Shop shop, InputStream shopImgInputStream,String fileName) {
         if(shop == null){
