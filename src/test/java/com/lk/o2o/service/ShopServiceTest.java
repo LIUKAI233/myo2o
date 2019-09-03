@@ -18,6 +18,17 @@ import java.io.InputStream;
 public class ShopServiceTest extends BaseTest {
     @Autowired
     private ShopService shopService;
+    
+    @Test
+    public void testGetShopList(){
+        PersonInfo user = new PersonInfo();
+        user.setUserId(8L);
+        Shop shopCondition = new Shop();
+        shopCondition.setOwner(user);
+        ShopExecution se = shopService.getShopList(shopCondition, 3, 5);
+        System.out.println("该页面店铺数量："+se.getShopList().size());
+        System.out.println("该用户总店铺数量"+se.getCount());
+    }
 
     @Test
     public void testUpdataShop() throws FileNotFoundException{

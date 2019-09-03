@@ -10,10 +10,23 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
+import java.util.List;
 
 public class ShopDaoTest extends BaseTest {
     @Autowired
     private ShopDao shopDao;
+
+    @Test
+    public void testQueryShopList(){
+        Shop shopCondition = new Shop();
+        PersonInfo owner = new PersonInfo();
+        owner.setUserId(8L);
+        shopCondition.setOwner(owner);
+        List<Shop> shopList = shopDao.queryShopList(shopCondition, 0, 5);
+        int shopCount = shopDao.queryShopCount(shopCondition);
+        System.out.println("shopList :"+shopList.size());
+        System.out.println("shopCount :"+shopCount);
+    }
 
     @Test
     public void testQueryByShopId(){
