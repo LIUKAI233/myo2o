@@ -38,6 +38,60 @@ public class ShopManagementController {
     @Autowired
     private ShopCategoryService shopCategoryService;
 
+    @RequestMapping(value = "modifyshop",method = RequestMethod.POST)
+    @ResponseBody
+    private Map<String,Object> modifyShop(HttpServletRequest request){
+        Map<String, Object> modelMap = new HashMap<String,Object>();
+        //接收并转化相应的参数，包含店铺信息和图片信息
+        String shopStr = HttpServletRequestUtil.getString(request, "shopStr");
+        // 使用jackson,把前端传过来的json数据封装到pojo中
+        ObjectMapper mapper = new ObjectMapper();
+        //先判断传过来的验证码
+        if(CodeUtil.checkVerifyCode(request)){
+            modelMap.put("success",false);
+            modelMap.put("errMsg","请输入正确的验证码");
+            return modelMap;
+        }
+        Shop shop = null;
+        try {
+            //封装数据到shop里
+            shop = mapper.readValue(shopStr, Shop.class);
+        }catch (Exception e){
+            modelMap.put("success",false);
+            modelMap.put("errMsg",e.getMessage());
+            return modelMap;
+        }
+        CommonsMultipartFile shopImg = null;
+        CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+        if(commonsMultipartResolver.isMultipart(request)){
+            MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
+            shopImg = (CommonsMultipartFile) multipartHttpServletRequest.getFile("shopImg");
+        }
+        //修改店铺信息
+        if(shop != null && shop.getShopId() != null){
+            ShopExecution shopExecution = null;
+            try {
+                shopExecution = shopService.updataShop(shop, shopImg.getInputStream(),shopImg.getOriginalFilename());
+                if(ShopStateEnum.SUCCESS.getStatue() == shopExecution.getState()){
+                    modelMap.put("success",true);
+                }else{
+                    modelMap.put("success",false);
+                    modelMap.put("errMsg",shopExecution.getStateInfo());
+                }
+            } catch (IOException e) {
+                modelMap.put("success",false);
+                modelMap.put("errMsg",e.getMessage());
+                return modelMap;
+            }
+            return modelMap;
+        }else{
+            modelMap.put("success",false);
+            modelMap.put("errMsg","请输入店铺信息");
+            return modelMap;
+        }
+    }
+
+    /*通过前端传过来的店铺id，查询店铺信息并返回*/
     @RequestMapping(value = "getshopbyid",method = RequestMethod.GET)
     @ResponseBody
     private Map<String,Object> getShopById(HttpServletRequest request){
@@ -56,6 +110,7 @@ public class ShopManagementController {
         return modelMap;
     }
 
+    /*返回店铺地址列表和商铺类别列表*/
     @RequestMapping(value = "getshopinitinfo",method = RequestMethod.GET)
     @ResponseBody
     private Map<String,Object> getshopinitinfo(HttpServletRequest request){
@@ -75,6 +130,7 @@ public class ShopManagementController {
         return modelMap;
     }
 
+    /*接收前端传过来的相关店铺信息，并添加到数据库中*/
     @RequestMapping(value = "/registershop",method = RequestMethod.POST)
     @ResponseBody
     private Map<String,Object> register(HttpServletRequest request){
@@ -84,18 +140,18 @@ public class ShopManagementController {
         // 使用jackson,把前端传过来的json数据封装到pojo中
         ObjectMapper mapper = new ObjectMapper();
         Shop shop = null;
+        //先判断传过来的验证码
+        if(CodeUtil.checkVerifyCode(request)){
+            modelMap.put("success",false);
+            modelMap.put("errMsg","请输入正确的验证码");
+            return modelMap;
+        }
         try {
             //封装数据到shop里
             shop = mapper.readValue(shopStr, Shop.class);
         }catch (Exception e){
             modelMap.put("success",false);
             modelMap.put("errMsg",e.getMessage());
-            return modelMap;
-        }
-        //先判断传过来的验证码
-        if(CodeUtil.checkVerifyCode(request)){
-            modelMap.put("success",false);
-            modelMap.put("errMsg","请输入正确的验证码");
             return modelMap;
         }
         CommonsMultipartFile shopImg = null;
@@ -111,14 +167,24 @@ public class ShopManagementController {
         //注册店铺
         if(shop != null && shopImg != null){
             //先自定义用户信息，后期从session获取
-            PersonInfo owner = new PersonInfo();
-            owner.setUserId(8l);
+            PersonInfo owner = (PersonInfo)request.getSession().getAttribute("user");
             shop.setOwner(owner);
             ShopExecution shopExecution = null;
             try {
-                shopExecution = shopService.addShop(shop, shopImg.getInputStream(),shopImg.getOriginalFilename());
+                if(shopImg == null){
+                    shopExecution = shopService.addShop(shop, null, null);
+                }else {
+                    shopExecution = shopService.addShop(shop, shopImg.getInputStream(), shopImg.getOriginalFilename());
+                }
                 if(ShopStateEnum.CHECK.getStatue() == shopExecution.getState()){
                     modelMap.put("success",true);
+                    //该用户可操作的店铺列表
+                    List<Shop> shopList = (List<Shop>)request.getSession().getAttribute("shopList");
+                    if(shopList == null && shopList.size() == 0) {
+                        shopList = new ArrayList<Shop>();
+                    }
+                    shopList.add(shopExecution.getShop());
+                    request.getSession().setAttribute("shopList",shopList);
                 }else{
                     modelMap.put("success",false);
                     modelMap.put("errMsg",shopExecution.getStateInfo());
@@ -131,7 +197,7 @@ public class ShopManagementController {
             return modelMap;
         }else{
             modelMap.put("success",false);
-            modelMap.put("errMsg","请输入店铺信息");
+            modelMap.put("errMsg","请输入店铺id");
             return modelMap;
         }
     }

@@ -17,7 +17,7 @@ public class ShopDaoTest extends BaseTest {
 
     @Test
     public void testQueryByShopId(){
-        Integer shopId = 15;
+        Long shopId = 15L;
         Shop shop = shopDao.queryByShopId(shopId);
         System.out.println("区域名称"+shop.getArea().getAreaName()+shop.getShopCategory().getShopCategoryName());
     }
@@ -46,7 +46,7 @@ public class ShopDaoTest extends BaseTest {
     @Test
     public void testUpdateShop(){
         Shop shop = new Shop();
-        shop.setShopId(28);
+        shop.setShopId(28L);
         shop.setShopName("newtest");
         shop.setLastEditTime(new Date());
         int i = shopDao.updateShop(shop);

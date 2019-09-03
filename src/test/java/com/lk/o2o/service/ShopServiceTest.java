@@ -22,7 +22,7 @@ public class ShopServiceTest extends BaseTest {
     @Test
     public void testUpdataShop() throws FileNotFoundException{
         Shop shop = new Shop();
-        shop.setShopId(28);
+        shop.setShopId(28L);
         shop.setShopName("更改店铺");
         File shopImg = new File("F:\\new.jpg");
         InputStream is = new FileInputStream(shopImg);
