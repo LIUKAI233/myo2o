@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/productadmin")
@@ -34,5 +36,12 @@ public class ProductManagementController {
             List<ProductCategory> productCategoryList = productCategoryService.queryProductCategory(currentShop.getShopId());
             return new Result<List<ProductCategory>>(true,productCategoryList);
         }
+    }
+
+    @RequestMapping(value = "removeproductcategory",method = RequestMethod.GET)
+    @ResponseBody
+    private Map<String,Object> removeProductCategory(HttpServletRequest request){
+        Map<String, Object> modelMap = new HashMap<>();
+        return modelMap;
     }
 }

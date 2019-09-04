@@ -1,7 +1,7 @@
 $(function () {
     var listUrl = '/myo2o/productadmin/getproductcategorylist';
     var addUrl = '/myo2o/productadmin/addproductcategorys';
-    var deleteUrl = '/myo2o/productadmin/removeproductcategory';
+    var deleteUrl = '/myo2o/productadmin/removeproductcategory?productCategoryId=';
     function getlist() {
         $.ajax({
             url: listUrl,
@@ -25,7 +25,7 @@ $(function () {
     }
 
     function deleteProductCategory(id){
-        return '<a href="/myo2o/productadmin/####?productCategoryId=' + id + '">删除</a>';
+        return '<a href='+deleteUrl+id+'>删除</a>';
     }
 
     $('#log-out').click(function () {
