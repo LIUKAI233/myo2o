@@ -9,6 +9,7 @@ $(function () {
                shopId = data.shopId;
            }
            $('#shopInfo').attr('href','/myo2o/shopadmin/shopoperation?shopId='+shopId);
+           $('#productCategoryInfo').attr('href','/myo2o/productadmin/productcategorylist?shopId='+shopId);
        }
    });
 });

@@ -38,6 +38,7 @@ public class ShopManagementController {
     @Autowired
     private ShopCategoryService shopCategoryService;
 
+    /*通过shopId获取店铺信息*/
     @RequestMapping(value = "getshopmanagementinfo",method = RequestMethod.GET)
     @ResponseBody
     private Map<String,Object> getShopManagementInfo(HttpServletRequest request){
@@ -84,6 +85,7 @@ public class ShopManagementController {
         return modelMap;
     }
 
+    //修改店铺信息
     @RequestMapping(value = "modifyshop",method = RequestMethod.POST)
     @ResponseBody
     private Map<String,Object> modifyShop(HttpServletRequest request){
@@ -109,6 +111,7 @@ public class ShopManagementController {
         }
         CommonsMultipartFile shopImg = null;
         CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+        //判读用户是否更改图片
         if(commonsMultipartResolver.isMultipart(request)){
             MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
             shopImg = (CommonsMultipartFile) multipartHttpServletRequest.getFile("shopImg");
