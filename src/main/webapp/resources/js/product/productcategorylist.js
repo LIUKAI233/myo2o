@@ -1,7 +1,10 @@
 $(function () {
+    var listUrl = '/myo2o/productadmin/getproductcategorylist';
+    var addUrl = '/myo2o/productadmin/addproductcategorys';
+    var deleteUrl = '/myo2o/productadmin/removeproductcategory';
     function getlist() {
         $.ajax({
-            url: "/myo2o/productadmin/getproductcategorylist",
+            url: listUrl,
             type: "get",
             dataType: "json",
             success: function (data) {
