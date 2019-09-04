@@ -1,10 +1,8 @@
 package com.lk.o2o.util;
 
 import net.coobird.thumbnailator.Thumbnails;
-import net.coobird.thumbnailator.geometry.Positions;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,8 +43,7 @@ public class ImageUtil {
 		// 图片处理完毕保存的位置
 		File dest = new File(FileUtil.getImgBasePath() + relativeAddr);
 		try {
-			Thumbnails.of(inputStreamThumbnail).size(200, 200)
-					.watermark(Positions.BOTTOM_RIGHT, ImageIO.read(new File(basePath+"/baidu.png")),0.25f).toFile(dest);
+			Thumbnails.of(inputStreamThumbnail).size(200, 200).toFile(dest);
 		} catch (IOException e) {
 			throw new RuntimeException("创建缩略图失败：" + e.toString());
 		}
