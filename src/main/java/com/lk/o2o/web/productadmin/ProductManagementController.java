@@ -1,5 +1,6 @@
 package com.lk.o2o.web.productadmin;
 
+import com.lk.o2o.dto.ProductCategoryExecution;
 import com.lk.o2o.dto.Result;
 import com.lk.o2o.entity.ProductCategory;
 import com.lk.o2o.entity.Shop;
@@ -7,6 +8,7 @@ import com.lk.o2o.enums.ProductCategoryStateEnum;
 import com.lk.o2o.service.ProductCategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -38,6 +40,43 @@ public class ProductManagementController {
         }
     }
 
+    /*批量添加店铺类别*/
+    @RequestMapping(value = "addproductcategories",method = RequestMethod.POST)
+    @ResponseBody
+    private Map<String,Object> addProductCategories(@RequestBody List<ProductCategory> productCategories, HttpServletRequest request){
+        Map<String, Object> modelMap = new HashMap<>();
+        /*从session获取shopId，并添加进分类里面*/
+        Shop currentShop = (Shop) request.getSession().getAttribute("currentShop");
+        if(currentShop == null && currentShop.getShopId() == null){
+            modelMap.put("success",false);
+            modelMap.put("errMsg","登录超时，请重新登录");
+        }
+         for(ProductCategory pc: productCategories) {
+            pc.setShopId(currentShop.getShopId());
+        }
+        try {
+            if(productCategories == null && productCategories.size() <= 0){
+                modelMap.put("success",false);
+                modelMap.put("errMsg","请至少输入一个类别");
+            }else {
+                ProductCategoryExecution pe = productCategoryService.addProductCategorys(productCategories);
+                if (ProductCategoryStateEnum.SUCCESS.getState() == pe.getState()) {
+                    modelMap.put("success", true);
+                } else {
+                    modelMap.put("success", false);
+                    modelMap.put("errMsg", ProductCategoryStateEnum.INNER_ERROR.getStateInfo());
+                }
+            }
+        } catch (Exception e) {
+           modelMap.put("success",false);
+           modelMap.put("errMsg",e.getMessage());
+           return modelMap;
+        }
+        return modelMap;
+    }
+
+
+    /*删除店铺类别*/
     @RequestMapping(value = "removeproductcategory",method = RequestMethod.GET)
     @ResponseBody
     private Map<String,Object> removeProductCategory(HttpServletRequest request){

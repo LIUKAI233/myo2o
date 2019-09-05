@@ -10,4 +10,7 @@ public interface ProductCategoryDao {
 
     /*删除店铺商品类别*/
     int deleteProductCategory(Long productCategoryId);
+
+    /*批量添加商品列表*/
+    int insertProductCategoryList(List<ProductCategory> productCategoryList);
 }
