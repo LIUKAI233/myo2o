@@ -11,4 +11,7 @@ public interface ProductCategoryService {
 
     /*批量插入商品类别*/
     ProductCategoryExecution addProductCategorys(List<ProductCategory> productCategoryList);
+
+    /*删除商品类别*/
+    ProductCategoryExecution deleteProductCategory(Long productCategoryId,Long shopId);
 }
