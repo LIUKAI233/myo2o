@@ -1,0 +1,32 @@
+package com.lk.o2o.dao;
+
+import com.lk.o2o.BaseTest;
+import com.lk.o2o.entity.ProductImg;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+public class ProductImgDaoTest extends BaseTest {
+    @Autowired
+    private ProductImgDao productImgDao;
+
+    @Test
+    public void testInsertProductImgs(){
+        List<ProductImg> productImgs = new ArrayList<ProductImg>();
+        ProductImg p1 = new ProductImg();
+        ProductImg p2 = new ProductImg();
+        p1.setImgAddr("adad");
+        p2.setImgAddr("dfdf");
+        p1.setCreateTime(new Date());
+        p2.setCreateTime(new Date());
+        p1.setProductId(15L);
+        p2.setProductId(15L);
+        productImgs.add(p1);
+        productImgs.add(p2);
+        int i = productImgDao.insertProductImgs(productImgs);
+        System.out.println(i);
+    }
+}
