@@ -1,6 +1,7 @@
 package com.lk.o2o.web.shopadmin;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.lk.o2o.dto.ImageHolder;
 import com.lk.o2o.dto.ShopExecution;
 import com.lk.o2o.entity.Area;
 import com.lk.o2o.entity.PersonInfo;
@@ -62,7 +63,8 @@ public class ShopManagementController {
         }
         return modelMap;
     }
-    
+
+    /*获得该用户的所有店铺列表*/
     @RequestMapping(value = "getshoplist",method = RequestMethod.GET)
     @ResponseBody
     private Map<String,Object> getShopList(HttpServletRequest request){
@@ -120,7 +122,12 @@ public class ShopManagementController {
         if(shop != null && shop.getShopId() != null){
             ShopExecution shopExecution = null;
             try {
-                shopExecution = shopService.updataShop(shop, shopImg.getInputStream(),shopImg.getOriginalFilename());
+                if(shopImg != null && shopImg.getInputStream() != null && shopImg.getOriginalFilename() != null) {
+                    ImageHolder imageHolder = new ImageHolder(shopImg.getInputStream(), shopImg.getOriginalFilename());
+                    shopExecution = shopService.updataShop(shop, imageHolder);
+                }else{
+                    shopExecution = shopService.updataShop(shop, null);
+                }
                 if(ShopStateEnum.SUCCESS.getStatue() == shopExecution.getState()){
                     modelMap.put("success",true);
                 }else{
@@ -220,16 +227,13 @@ public class ShopManagementController {
             shop.setOwner(owner);
             ShopExecution shopExecution = null;
             try {
-                if(shopImg == null){
-                    shopExecution = shopService.addShop(shop, null, null);
-                }else {
-                    shopExecution = shopService.addShop(shop, shopImg.getInputStream(), shopImg.getOriginalFilename());
-                }
+                ImageHolder imageHolder = new ImageHolder(shopImg.getInputStream(), shopImg.getOriginalFilename());
+                shopExecution = shopService.addShop(shop,imageHolder );
                 if(ShopStateEnum.CHECK.getStatue() == shopExecution.getState()){
                     modelMap.put("success",true);
                     //该用户可操作的店铺列表
                     List<Shop> shopList = (List<Shop>)request.getSession().getAttribute("shopList");
-                    if(shopList == null && shopList.size() == 0) {
+                    if(shopList == null) {
                         shopList = new ArrayList<Shop>();
                     }
                     shopList.add(shopExecution.getShop());

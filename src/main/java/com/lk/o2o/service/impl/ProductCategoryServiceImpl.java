@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 public class ProductCategoryServiceImpl implements ProductCategoryService {
 
     @Autowired
@@ -25,6 +24,7 @@ public class ProductCategoryServiceImpl implements ProductCategoryService {
     }
 
     @Override
+    @Transactional
     public ProductCategoryExecution addProductCategorys(List<ProductCategory> productCategoryList) {
         if(productCategoryList != null && productCategoryList.size() > 0){
             try {

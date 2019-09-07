@@ -1,6 +1,7 @@
 package com.lk.o2o.service.impl;
 
 import com.lk.o2o.dao.ShopDao;
+import com.lk.o2o.dto.ImageHolder;
 import com.lk.o2o.dto.ShopExecution;
 import com.lk.o2o.entity.Shop;
 import com.lk.o2o.enums.ShopStateEnum;
@@ -44,7 +45,9 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public ShopExecution updataShop(Shop shop, InputStream shopImgInputStream, String fileName) {
+    public ShopExecution updataShop(Shop shop, ImageHolder thunbnail) {
+        InputStream shopImgInputStream = thunbnail.getImage();
+        String fileName = thunbnail.getImageName();
         if(shop == null || shop.getShopId() == null){
             return new ShopExecution(ShopStateEnum.NULL_SHOP);
         }
@@ -55,7 +58,7 @@ public class ShopServiceImpl implements ShopService {
                 if(shopTemp.getShopImg() != null) {
                     FileUtil.deleteFile(shopTemp.getShopImg());
                 }
-                addShopImg(shop,shopImgInputStream, fileName);
+                addShopImg(shop,thunbnail);
             }
             //2.修改店铺信息
             shop.setLastEditTime(new Date());
@@ -72,7 +75,8 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
-    public ShopExecution addShop(Shop shop, InputStream shopImgInputStream,String fileName) {
+    public ShopExecution addShop(Shop shop, ImageHolder thunbnail) {
+
         if(shop == null){
             return new ShopExecution(ShopStateEnum.NULL_SHOP);
         }
@@ -87,7 +91,7 @@ public class ShopServiceImpl implements ShopService {
         }else{
             try {
                 //创建图片保存位置，并保存图片路径
-                addShopImg(shop,shopImgInputStream, fileName);
+                addShopImg(shop,thunbnail);
             }catch (Exception e){
                 throw new ShopOperationException("addShopImg ERROR"+e.getMessage());
             }
@@ -99,11 +103,11 @@ public class ShopServiceImpl implements ShopService {
         return new ShopExecution(ShopStateEnum.SUCCESS,shop);
     }
 
-    private void addShopImg(Shop shop, InputStream shopImgInputStream , String fileName) {
+    private void addShopImg(Shop shop, ImageHolder thunbnail) {
         //获取shop图片目录的相对路径
         String dest = FileUtil.getShopImagePath(shop.getShopId());
-        //传入图片文件和图片所在相对路径
-        String shopImgAddr = ImageUtil.generateThumbnail(shopImgInputStream,dest,fileName);
+        //传入图片文件和图片所在相对路径，返回图片完整的相对路径
+        String shopImgAddr = ImageUtil.generateThumbnail(thunbnail,dest);
         shop.setShopImg(shopImgAddr);
     }
 }

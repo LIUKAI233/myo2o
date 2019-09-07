@@ -1,6 +1,7 @@
 package com.lk.o2o.service;
 
 import com.lk.o2o.BaseTest;
+import com.lk.o2o.dto.ImageHolder;
 import com.lk.o2o.dto.ShopExecution;
 import com.lk.o2o.entity.Area;
 import com.lk.o2o.entity.PersonInfo;
@@ -37,7 +38,8 @@ public class ShopServiceTest extends BaseTest {
         shop.setShopName("更改店铺");
         File shopImg = new File("F:\\new.jpg");
         InputStream is = new FileInputStream(shopImg);
-        ShopExecution shopExecution = shopService.updataShop(shop, is, shopImg.getName());
+        ImageHolder imageHolder = new ImageHolder(is, shopImg.getName());
+        ShopExecution shopExecution = shopService.updataShop(shop, imageHolder);
         System.out.println(shopExecution.getStateInfo());
     }
 
@@ -58,7 +60,8 @@ public class ShopServiceTest extends BaseTest {
         shop.setOwner(owner);
         File shopImg = new File("F:\\test.jpg");
         InputStream is = new FileInputStream(shopImg);
-        ShopExecution shopExecution = shopService.addShop(shop,is, shopImg.getName());
+        ImageHolder imageHolder = new ImageHolder(is, shopImg.getName());
+        ShopExecution shopExecution = shopService.addShop(shop, imageHolder);
         System.out.println(shopExecution.getShop().getShopId());
     }
 }
