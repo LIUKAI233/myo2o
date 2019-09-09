@@ -60,6 +60,16 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Override
+    public ProductExecution modifyProduct(Product product) {
+        return null;
+    }
+
+    @Override
+    public ProductExecution queryProducts(Product product) {
+        return null;
+    }
+
     /*批量添加处理图片*/
     private void addProductImageList(Product product, List<ImageHolder> imageList) {
         //传入店铺ID,获得图片的相对路径

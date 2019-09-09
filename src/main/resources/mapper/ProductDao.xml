@@ -21,4 +21,36 @@
              #{shop.shopId}
             )
     </insert>
+
+    <update id="updataProduct" parameterType="com.lk.o2o.entity.Product" >
+        UPDATE tb_product
+        <set>
+            <if test="productName != null">product_name = #{productName},</if>
+            <if test="productDesc != null">product_desc = #{productDesc},</if>
+            <if test="imgAddr != null">img_addr = #{imgAddr},</if>
+            <if test="normalPrice != null">normal_price = #{normalPrice},</if>
+            <if test="promotionPrice != null">promotion_price = #{promotionPrice},</if>
+            <if test="priority != null">priority = #{priority},</if>
+            <if test="enableStatus != null">enable_status = #{enableStatus},</if>
+            <if test="productCategory.productCategoryId != null">product_category_id = #{productCategory.productCategoryId},</if>
+        </set>
+        WHERE
+        shop_id = #{shop.shopId}
+        AND
+        product_id = #{productId}
+    </update>
+
+    <select id="selectProduct" resultType="com.lk.o2o.entity.Product">
+        SELECT  `product_name`, `product_desc`, `img_addr`, `normal_price`, `promotion_price`,
+                `priority`, `create_time`, `last_edit_time`, `enable_status`, `point`
+        FROM tb_product
+        <where>
+            <if test="product.productName != null">product_name like '%#{product.productName}%' AND</if>
+            <if test="product.enableStatus != null">enable_status = #{product.enableStatus} AND</if>
+            <if test="product.productId != null">product_id = #{product.productId}</if>
+            shop_id = #{product.shop.shopId}
+        </where>
+        ORDER BY priority DESC
+        LIMIT #{rowIndex},#{pageSize};
+    </select>
 </mapper>

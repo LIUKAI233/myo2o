@@ -12,4 +12,14 @@ public class ProductAdminController {
     public String productCategoryList(){
         return "product/productcategorylist";
     }
+
+    @RequestMapping("productmanage")
+    public String productManage(){
+        return "product/productmanage";
+    }
+
+    @RequestMapping("productoperation")
+    public String productOperation(){
+        return "product/productoperation";
+    }
 }

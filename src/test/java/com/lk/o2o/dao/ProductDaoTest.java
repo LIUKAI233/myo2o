@@ -8,11 +8,39 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
+import java.util.List;
 
 public class ProductDaoTest extends BaseTest {
 
     @Autowired
     private ProductDao productDao;
+
+    @Test
+    public void testUpdataProduct(){
+        Product product = new Product();
+        Shop shop = new Shop();
+        shop.setShopId(20L);
+        product.setProductId(17L);
+        product.setProductName("更改后的测试商品");
+        product.setShop(shop);
+        ProductCategory productCategory = new ProductCategory();
+        productCategory.setProductCategoryId(13L);
+        product.setProductCategory(productCategory);
+        int i = productDao.updataProduct(product);
+        System.out.println(i);
+    }
+
+    @Test
+    public void testSelectProduct(){
+        Product product1 = new Product();
+        Shop shop = new Shop();
+        shop.setShopId(20L);
+        product1.setShop(shop);
+        List<Product> products = productDao.selectProduct(product1,1,3);
+        for (Product product : products) {
+            System.out.println(product.getProductName());
+        }
+    }
 
     @Test
     public void testInsertProduct(){

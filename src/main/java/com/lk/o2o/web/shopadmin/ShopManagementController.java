@@ -193,7 +193,7 @@ public class ShopManagementController {
         Map<String, Object> modelMap = new HashMap<String,Object>();
         //接收并转化相应的参数，包含店铺信息和图片信息
         String shopStr = HttpServletRequestUtil.getString(request, "shopStr");
-        // 使用jackson,把前端传过来的json数据封装到pojo中
+        //使用jackson,把前端传过来的json数据封装到pojo中
         ObjectMapper mapper = new ObjectMapper();
         Shop shop = null;
         //先判断传过来的验证码

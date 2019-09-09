@@ -65,7 +65,7 @@ $(function () {
         var shopCategoryType = document.getElementById("shop-category");
         var shopCategoryId = shopCategoryType.options [shopCategoryType.selectedIndex].id;
         var areaType = document.getElementById("area");
-        var areaId = areaType.options [areaType.selectedIndex].id
+        var areaId = areaType.options [areaType.selectedIndex].id;
         var area = {};
         var shopCategory = {};
         area.areaId = areaId;

@@ -40,6 +40,7 @@ public class ProductManagementController {
 
     private final int IMAGEMAXCOUNT = 6;
 
+    /*添加商品*/
     @RequestMapping(value = "addproduct",method = RequestMethod.POST)
     @ResponseBody
     private Map<String,Object> addProduct(HttpServletRequest request){
@@ -89,7 +90,7 @@ public class ProductManagementController {
             String productStr = HttpServletRequestUtil.getString(request, "productStr");
             // 使用jackson,把前端传过来的json数据封装到pojo中
             ObjectMapper mapper = new ObjectMapper();
-            Product product = mapper.readValue("productStr", Product.class);
+            Product product = mapper.readValue(productStr, Product.class);
             //判读从前端获取的信息是否为空
             if(product != null && thumbnailHolder != null && imageHolderList.size() > 0) {
                 try{
