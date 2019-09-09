@@ -61,12 +61,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductExecution modifyProduct(Product product) {
+    public ProductExecution modifyProduct(Product product, ImageHolder image, List<ImageHolder> imageList) {
         return null;
     }
 
     @Override
-    public ProductExecution queryProducts(Product product) {
+    public ProductExecution queryProducts(Product product, int pageIndex, int pageSize) {
         return null;
     }
 

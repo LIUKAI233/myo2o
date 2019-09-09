@@ -20,9 +20,18 @@ public interface ProductService {
     /**
      * 更新商品信息
      * @param product 商品信息
+     * @param image 图片信息名称
+     * @param imageList 批量图片信息名称
      * @return 处理结果
      */
-    ProductExecution modifyProduct(Product product);
+    ProductExecution modifyProduct(Product product, ImageHolder image, List<ImageHolder> imageList);
 
-    ProductExecution queryProducts(Product product);
+    /**
+     * 查询商品信息
+     * @param product 查询条件
+     * @param pageIndex 当前查询的页数
+     * @param pageSize  一页多少数据
+     * @return 处理结果
+     */
+    ProductExecution queryProducts(Product product,int pageIndex,int pageSize);
 }
