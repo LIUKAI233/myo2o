@@ -14,6 +14,20 @@ public class ProductImgDaoTest extends BaseTest {
     private ProductImgDao productImgDao;
 
     @Test
+    public void testDeleteProductImgByProductId(){
+        int effectNum = productImgDao.deleteProductImagByProductId(15L);
+        System.out.println(effectNum);
+    }
+
+    @Test
+    public void testSelectProductImgByProductId(){
+        List<ProductImg> productImgs = productImgDao.selectProductImgListByProductId(15L);
+        for (ProductImg pi : productImgs) {
+            System.out.println(pi.getImgAddr());
+        }
+    }
+
+    @Test
     public void testInsertProductImgs(){
         List<ProductImg> productImgs = new ArrayList<ProductImg>();
         ProductImg p1 = new ProductImg();

@@ -6,11 +6,11 @@ $(function () {
     //添加商品路径
     var addUrl = "/myo2o/productadmin/addproduct";
     //修改商品路径
-    var modifyUrl = "myo2o/productadmin/modifyproduct";
+    var modifyUrl = "/myo2o/productadmin/modifyproduct";
     //获取商品分类的url
     var categoryUrl = "/myo2o/productadmin/getproductcategorylist";
     //获取商品信息的url
-    var infoUrl = "/myo2o/productadmin/getproduct";
+    var infoUrl = "/myo2o/productadmin/getproductById?productId="+productId;
 
     if(isEdit){
         //获取商品信息
@@ -52,7 +52,7 @@ $(function () {
                 categoryList.map(function (item, index) {
                     optionCategory += "<option id = '" + item.productCategoryId + "'>" + item.productCategoryName + "</option>"
                 });
-                $('#product-category').html(tempAreaHtml);
+                $('#product-category').html(optionCategory);
                 $("#product-category option[data-id='"+categoryId+"']").attr("selected","selected");
             }
         });
@@ -93,10 +93,10 @@ $(function () {
         formData.append('verifyCodeActul', verifyCodeActul);
         formData.append('thumbnail', thumbnail);
         //遍历商品详情图控件，获取里面的文件流
-        $('#detail-img').map(function (index , item) {
-            if($('#detail-img')[index].files.length > 0){
+        $('.detail-img').map(function (index ,item) {
+            if($('.detail-img')[index].files.length > 0){
                 //将第i个文件流，赋值给key为productImgi的键值对里
-                formData.append("productImg"+index, $('#detail-img')[index].files[0])
+                formData.append("productImg"+index, $('.detail-img')[index].files[0])
             }
         })
         formData.append('productStr', JSON.stringify(product));

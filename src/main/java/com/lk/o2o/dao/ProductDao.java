@@ -21,6 +21,13 @@ public interface ProductDao {
     int updataProduct(Product product);
 
     /**
+     * 根据商品ID，查询商品信息
+     * @param productId 商品id
+     * @return  商品信息
+     */
+    Product queryProductById(Long productId);
+
+    /**
      * 查询店铺商品
      * @param product 查询条件
      * @param rowIndex 从第几条数据开始

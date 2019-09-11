@@ -28,10 +28,8 @@ public interface ProductService {
 
     /**
      * 查询商品信息
-     * @param product 查询条件
-     * @param pageIndex 当前查询的页数
-     * @param pageSize  一页多少数据
+     * @param productId 商品ID
      * @return 处理结果
      */
-    ProductExecution queryProducts(Product product,int pageIndex,int pageSize);
+    Product queryProduct(Long productId);
 }

@@ -14,10 +14,7 @@ import com.lk.o2o.util.CodeUtil;
 import com.lk.o2o.util.HttpServletRequestUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -40,10 +37,32 @@ public class ProductManagementController {
 
     private final int IMAGEMAXCOUNT = 6;
 
-    /*添加商品*/
-    @RequestMapping(value = "addproduct",method = RequestMethod.POST)
+    /*获取商品信息*/
+    @RequestMapping(value = "getproductById",method = RequestMethod.GET)
     @ResponseBody
-    private Map<String,Object> addProduct(HttpServletRequest request){
+    private Map<String,Object> getProductById(@RequestParam Long productId){
+        Map<String, Object> modelMap = new HashMap<>();
+        if(productId < 0){
+            modelMap.put("success",false);
+            modelMap.put("errMsg","productId empty");
+        }
+        try {
+            Product product = productService.queryProduct(productId);
+            List<ProductCategory> productCategoryList = productCategoryService.queryProductCategory(product.getShop().getShopId());
+            modelMap.put("success",true);
+            modelMap.put("product",product);
+            modelMap.put("productCategoryList",productCategoryList);
+        }catch (Exception e){
+            modelMap.put("success",false);
+            modelMap.put("errMsg",e.getMessage());
+        }
+        return modelMap;
+    }
+
+    /*修改商品信息*/
+    @RequestMapping(value = "modifyproduct",method = RequestMethod.POST)
+    @ResponseBody
+    private Map<String,Object> modifyproduct(HttpServletRequest request){
         Map<String, Object> modelMap = new HashMap<>();
         //验证码校验
         if(CodeUtil.checkVerifyCode(request)){
@@ -51,8 +70,85 @@ public class ProductManagementController {
             modelMap.put("errMsg","请输入正确的验证码");
             return modelMap;
         }
-        /*处理前端传过来的图片*/
-        CommonsMultipartFile thumbnail = null;
+        //商品缩略图
+        ImageHolder thumbnailHolder = null;
+        //商品详情图集合
+        List<ImageHolder> imageHolderList = new ArrayList<>();
+        CommonsMultipartResolver commonsMultipartResolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+        try {
+            //若存在中存在文件流，取出其中的文件，包括缩略图和详情图
+            if (commonsMultipartResolver.isMultipart(request)) {
+                MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest) request;
+                //获得缩略图信息
+                CommonsMultipartFile thumbnailFile = (CommonsMultipartFile) multipartHttpServletRequest.getFile("thumbnail");
+                if(thumbnailFile != null) {
+                    thumbnailHolder = new ImageHolder(thumbnailFile.getInputStream(), thumbnailFile.getOriginalFilename());
+                }
+                //取出详情图列表，并构建List<ImageHolder>,最大支持6张图片上传
+                for (int i = 0; i < IMAGEMAXCOUNT; i++) {
+                    CommonsMultipartFile productImgFile = (CommonsMultipartFile) multipartHttpServletRequest.getFile("productImg" + i);
+                    //如果取出的文件流不为空，就添加进List<ImageHolder>
+                    if (productImgFile != null) {
+                        ImageHolder productImg = new ImageHolder(productImgFile.getInputStream(), productImgFile.getOriginalFilename());
+                        imageHolderList.add(productImg);
+                    } else {
+                        //为空就跳出循环
+                        break;
+                    }
+                }
+            }
+        }catch (Exception e){
+            modelMap.put("success",false);
+            modelMap.put("errMsg",e.getMessage());
+        }
+        try {
+            String productStr = HttpServletRequestUtil.getString(request, "productStr");
+            // 使用jackson,把前端传过来的json数据封装到pojo中
+            ObjectMapper mapper = new ObjectMapper();
+            Product product = mapper.readValue(productStr, Product.class);
+            //判读从前端获取的信息是否为空
+            if(product != null) {
+                try{
+                    //从session获得店铺信息
+                    Shop currentShop = (Shop)request.getSession().getAttribute("currentShop");
+                    if(currentShop == null && currentShop.getShopId() == null){
+                        modelMap.put("success",false);
+                        modelMap.put("errMsg","登录超时，请重新登录");
+                        return modelMap;
+                    }
+                    product.setShop(currentShop);
+                    ProductExecution productExecution = productService.modifyProduct(product, thumbnailHolder, imageHolderList);
+                    if(productExecution.getState() == ProductCategoryStateEnum.SUCCESS.getState()){
+                        modelMap.put("success",true);
+                    }else{
+                        modelMap.put("success",false);
+                        modelMap.put("errMsg",productExecution.getStateInfo());
+                    }
+                }catch(Exception e){
+                    modelMap.put("success",false);
+                    modelMap.put("errMsg",e.getMessage());
+                }
+            }
+        }catch (Exception e){
+            modelMap.put("success",false);
+            modelMap.put("errMsg",e.getMessage());
+        }
+        return modelMap;
+    }
+
+    /*添加商品*/
+    @RequestMapping(value = "addproduct",method = RequestMethod.POST)
+    @ResponseBody
+    private Map<String,Object> addProduct(HttpServletRequest request){
+        Map<String, Object> modelMap = new HashMap<>();
+        //判读是商品添加，还是上下架操作，若是后者，则不需要校验验证码
+        boolean statusChange = HttpServletRequestUtil.getBoolean(request,"statusChange");
+        //验证码校验
+        if(!statusChange && CodeUtil.checkVerifyCode(request)){
+            modelMap.put("success",false);
+            modelMap.put("errMsg","请输入正确的验证码");
+            return modelMap;
+        }
         //商品缩略图
         ImageHolder thumbnailHolder = null;
         //商品详情图集合
@@ -63,8 +159,10 @@ public class ProductManagementController {
             if(commonsMultipartResolver.isMultipart(request)){
                 MultipartHttpServletRequest multipartHttpServletRequest = (MultipartHttpServletRequest)request;
                 //获得缩略图信息
-                thumbnail = (CommonsMultipartFile) multipartHttpServletRequest.getFile("thumbnail");
-                thumbnailHolder = new ImageHolder(thumbnail.getInputStream(), thumbnail.getOriginalFilename());
+                CommonsMultipartFile thumbnailFile = (CommonsMultipartFile) multipartHttpServletRequest.getFile("thumbnail");
+                if(thumbnailFile != null) {
+                    thumbnailHolder = new ImageHolder(thumbnailFile.getInputStream(), thumbnailFile.getOriginalFilename());
+                }
                 //取出详情图列表，并构建List<ImageHolder>,最大支持6张图片上传
                 for(int i=0 ; i < IMAGEMAXCOUNT ; i++){
                     CommonsMultipartFile productImgFile =  (CommonsMultipartFile) multipartHttpServletRequest.getFile("productImg"+i);
@@ -96,9 +194,12 @@ public class ProductManagementController {
                 try{
                     //从session获得店铺信息
                     Shop currentShop = (Shop)request.getSession().getAttribute("currentShop");
-                    Shop shop = new Shop();
-                    shop.setShopId(currentShop.getShopId());
-                    product.setShop(shop);
+                    if(currentShop == null && currentShop.getShopId() == null){
+                        modelMap.put("success",false);
+                        modelMap.put("errMsg","登录超时，请重新登录");
+                        return modelMap;
+                    }
+                    product.setShop(currentShop);
                     ProductExecution productExecution = productService.addProduct(product, thumbnailHolder, imageHolderList);
                     if(productExecution.getState() == ProductCategoryStateEnum.SUCCESS.getState()){
                         modelMap.put("success",true);

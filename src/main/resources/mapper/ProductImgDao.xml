@@ -18,4 +18,16 @@
                     )
                </foreach>
     </insert>
+
+    <delete id="deleteProductImagByProductId" parameterType="Long">
+        DELETE FROM tb_product_img
+        WHERE product_id = #{productId}
+    </delete>
+
+    <select id="selectProductImgListByProductId" resultType="com.lk.o2o.entity.ProductImg">
+        SELECT img_addr, img_desc, priority, create_time
+        FROM tb_product_img
+        WHERE product_id = #{productId}
+        ORDER BY priority DESC
+    </select>
 </mapper>

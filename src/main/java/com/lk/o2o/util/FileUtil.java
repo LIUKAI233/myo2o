@@ -58,6 +58,7 @@ public class FileUtil {
 		return nowTimeStr + rannum;
 	}
 
+	//给定文件路径，删除该路径下图片
 	public static void deleteFile(String storePath) {
 		File file = new File(getImgBasePath() + storePath);
 		if (file.exists()) {
@@ -70,4 +71,5 @@ public class FileUtil {
 			file.delete();
 		}
 	}
+
 }

@@ -16,6 +16,12 @@ public class ProductDaoTest extends BaseTest {
     private ProductDao productDao;
 
     @Test
+    public void testqueryProduct(){
+        Product product = productDao.queryProductById(14L);
+        System.out.println(product.getProductName());
+    }
+
+    @Test
     public void testUpdataProduct(){
         Product product = new Product();
         Shop shop = new Shop();
