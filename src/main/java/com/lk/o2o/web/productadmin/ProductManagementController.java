@@ -37,7 +37,53 @@ public class ProductManagementController {
 
     private final int IMAGEMAXCOUNT = 6;
 
-    /*获取商品信息*/
+    /*根据自定义信息，获取商品信息*/
+    @RequestMapping(value = "getproductlist",method = RequestMethod.GET)
+    @ResponseBody
+    private Map<String,Object> getProductList(HttpServletRequest request){
+        Map<String, Object> modelMap = new HashMap<>();
+        //获取前台传过来的页码
+        int pageIndex = HttpServletRequestUtil.getInt(request, "pageIndex");
+        //获取前台要求一页的商品数量
+        int pageSize = HttpServletRequestUtil.getInt(request, "pageSize");
+        //从session获取currentShop，主要为了获取shopId
+        Shop currentShop =(Shop) request.getSession().getAttribute("currentShop");
+        //空值判断
+        if((pageIndex > -1) && (pageSize > -1) && (currentShop != null) && (currentShop.getShopId() != null)){
+            //获取需要检索的条件，包括是否需要以类别，或者名字模糊查询
+            long productCategoryId = HttpServletRequestUtil.getLong(request, "productCategoryId");
+            String productName = HttpServletRequestUtil.getString(request, "productName");
+            Product product = compactProductCondition(currentShop.getShopId(),productCategoryId,productName);
+            ProductExecution pe = productService.queryProductList(product, pageIndex, pageSize);
+            modelMap.put("success", true);
+            modelMap.put("productList", pe.getProductList());
+            modelMap.put("count", pe.getCount());
+        }else{
+            modelMap.put("success",false);
+            modelMap.put("errMsg","empty pageIndex or pageSize or shopId");
+        }
+        return modelMap;
+    }
+
+    private Product compactProductCondition(Long shopId, long productCategoryId, String productName) {
+        Product productCondition = new Product();
+        Shop shop = new Shop();
+        shop.setShopId(shopId);
+        productCondition.setShop(shop);
+        //如果指定商品类别
+        if(productCategoryId != -1L){
+            ProductCategory productCategory = new ProductCategory();
+            productCategory.setProductCategoryId(productCategoryId);
+            productCondition.setProductCategory(productCategory);
+        }
+        //如果按照名字模糊查询
+        if(productName != null && productName.equals("")){
+            productCondition.setProductName(productName);
+        }
+        return productCondition;
+    }
+
+    /*根据商品ID，获取商品信息*/
     @RequestMapping(value = "getproductById",method = RequestMethod.GET)
     @ResponseBody
     private Map<String,Object> getProductById(@RequestParam Long productId){
@@ -47,7 +93,7 @@ public class ProductManagementController {
             modelMap.put("errMsg","productId empty");
         }
         try {
-            Product product = productService.queryProduct(productId);
+            Product product = productService.queryProductById(productId);
             List<ProductCategory> productCategoryList = productCategoryService.queryProductCategory(product.getShop().getShopId());
             modelMap.put("success",true);
             modelMap.put("product",product);

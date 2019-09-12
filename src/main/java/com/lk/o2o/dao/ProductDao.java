@@ -35,4 +35,11 @@ public interface ProductDao {
      * @return 查询出来的集合
      */
     List<Product> selectProduct(@Param("product")Product product, @Param("rowIndex")int rowIndex, @Param("pageSize")int pageSize);
+
+    /**
+     * 查询符合条件的商品数量
+     * @param product 查询条件
+     * @return 商品数量
+     */
+    int selectCount(@Param("product")Product product);
 }

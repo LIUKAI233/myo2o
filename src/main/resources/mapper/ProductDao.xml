@@ -106,15 +106,35 @@
 
     <select id="selectProduct" resultType="com.lk.o2o.entity.Product">
         SELECT `product_name`, `product_desc`, `img_addr`, `normal_price`, `promotion_price`,
-        `priority`, `create_time`, `last_edit_time`, `enable_status`, `point`
+        `priority`, `create_time`, `last_edit_time`, `enable_status`, `point`,`product_id`
         FROM tb_product
         <where>
-            <if test="product.productName != null">product_name like '%#{product.productName}%' AND</if>
-            <if test="product.enableStatus != null">enable_status = #{product.enableStatus} AND</if>
-            <if test="product.productId != null">product_id = #{product.productId}</if>
-            shop_id = #{product.shop.shopId}
+            <if test="product.productName != null">and product_name like %#{product.productName}% AND</if>
+            <if test="product.enableStatus != null">and enable_status = #{product.enableStatus} AND</if>
+            <if test="product.productId != null">and product_id = #{product.productId}</if>
+            <if test="product.shop != null and product.shop.shopId != null">and shop_id = #{product.shop.shopId}</if>
+            <if test="product.productCategory != null and product.productCategory.productCategoryId != null">
+                and product_category_id = #{product.productCategory.productCategoryId}
+            </if>
         </where>
         ORDER BY priority DESC
         LIMIT #{rowIndex},#{pageSize};
+    </select>
+
+    <select id="selectCount" parameterType="com.lk.o2o.entity.Product" resultType="Integer">
+        SELECT count(1)
+        FROM tb_product
+        <where>
+            <!--写like语句的时候一般都会写成like '% %' 在mybatis里面写就应该是like '%${name}%'
+                而不是 '%#{name}%'  ${name}不带单引号  #{name}带单引号
+             -->
+            <if test="product.productName != null">and product_name like '%${product.productName}%' AND</if>
+            <if test="product.enableStatus != null">and enable_status = #{product.enableStatus} AND</if>
+            <if test="product.productId != null">and product_id = #{product.productId}</if>
+            <if test="product.shop != null and product.shop.shopId != null">and shop_id = #{product.shop.shopId}</if>
+            <if test="product.productCategory != null and product.productCategory.productCategoryId != null">
+                and product_category_id = #{product.productCategory.productCategoryId}
+            </if>
+        </where>
     </select>
 </mapper>

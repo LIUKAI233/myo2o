@@ -71,11 +71,11 @@ public class ProductExecution {
         this.product = product;
     }
 
-    public List<Product> getShopList() {
+    public List<Product> getProductList() {
         return productList;
     }
 
-    public void setShopList(List<Product> productList) {
+    public void setProductList(List<Product> productList) {
         this.productList = productList;
     }
 }

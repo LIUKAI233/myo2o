@@ -31,5 +31,14 @@ public interface ProductService {
      * @param productId 商品ID
      * @return 处理结果
      */
-    Product queryProduct(Long productId);
+    Product queryProductById(Long productId);
+
+    /**
+     * 根据输入条件，查询符合的商品列表 商品名(模糊),商品id，店铺id，商品状态，商品类别
+     * @param product 查询条件
+     * @param pageIndex 查询页数
+     * @param pageSize 一页多少数据
+     * @return 查询到的集合
+     */
+    ProductExecution queryProductList(Product product ,Integer pageIndex,Integer pageSize);
 }

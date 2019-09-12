@@ -43,6 +43,8 @@ public class ProductDaoTest extends BaseTest {
         shop.setShopId(20L);
         product1.setShop(shop);
         List<Product> products = productDao.selectProduct(product1,1,3);
+        int i = productDao.selectCount(product1);
+        System.out.println(i);
         for (Product product : products) {
             System.out.println(product.getProductName());
         }

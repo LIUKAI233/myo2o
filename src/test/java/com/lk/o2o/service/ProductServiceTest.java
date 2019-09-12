@@ -21,6 +21,19 @@ public class ProductServiceTest extends BaseTest {
     private ProductService productService;
 
     @Test
+    public void testQueryProductList(){
+        Product product = new Product();
+        Shop shop = new Shop();
+        shop.setShopId(20L);
+        product.setShop(shop);
+        ProductExecution productExecution = productService.queryProductList(product, 0, 999);
+        List<Product> productList = productExecution.getProductList();
+        for (Product p : productList) {
+            System.out.println(p.getProductName());
+        }
+    }
+
+    @Test
     public void testAddProduct() throws FileNotFoundException {
         Product product = new Product();
         product.setProductName("测试商品");

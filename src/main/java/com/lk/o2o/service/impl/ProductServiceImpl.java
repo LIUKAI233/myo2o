@@ -11,6 +11,7 @@ import com.lk.o2o.exceptions.ProductOperationException;
 import com.lk.o2o.service.ProductService;
 import com.lk.o2o.util.FileUtil;
 import com.lk.o2o.util.ImageUtil;
+import com.lk.o2o.util.pageCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -107,8 +108,24 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     /*通过传入的商品id，查询商品信息*/
-    public Product queryProduct(Long productId) {
+    public Product queryProductById(Long productId) {
         return productDao.queryProductById(productId);
+    }
+
+    /*根据输入条件，分页返回数据*/
+    @Override
+    public ProductExecution queryProductList(Product product,Integer pageIndex,Integer pageSize) {
+        int rowIndex = pageCalculator.calculator(pageIndex, pageSize);
+        try {
+            ProductExecution pe = new ProductExecution();
+            List<Product> products = productDao.selectProduct(product, rowIndex, pageSize);
+            int count = productDao.selectCount(product);
+            pe.setProductList(products);
+            pe.setCount(count);
+            return pe;
+        }catch (Exception e){
+            throw new ProductOperationException("queryProductList error"+e.getMessage());
+        }
     }
 
     /*批量添加处理图片*/

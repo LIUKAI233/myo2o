@@ -3,10 +3,7 @@ package com.lk.o2o.service;
 import com.lk.o2o.BaseTest;
 import com.lk.o2o.dto.ImageHolder;
 import com.lk.o2o.dto.ShopExecution;
-import com.lk.o2o.entity.Area;
-import com.lk.o2o.entity.PersonInfo;
-import com.lk.o2o.entity.Shop;
-import com.lk.o2o.entity.ShopCategory;
+import com.lk.o2o.entity.*;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +16,7 @@ import java.io.InputStream;
 public class ShopServiceTest extends BaseTest {
     @Autowired
     private ShopService shopService;
-    
+
     @Test
     public void testGetShopList(){
         PersonInfo user = new PersonInfo();
