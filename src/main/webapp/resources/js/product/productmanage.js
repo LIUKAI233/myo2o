@@ -22,13 +22,13 @@ $(function () {
                         contrayStatus = 1;
                     }
                     tempHtml += '' + '<div class="row row-product">'
-                        + '<div class="col-30">'
+                        + '<div class="col-33">'
                         + item.productName
                         + '</div>'
                         + '<div class="col-20">'
                         + item.priority
                         + '</div>'
-                        + '<div class="col-50">'
+                        + '<div class="col-40">'
                         + '<a href="#" class="edit" data-id="'
                         + item.productId
                         + '" data-status="'

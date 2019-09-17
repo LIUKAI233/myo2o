@@ -22,6 +22,12 @@ public class ProductDaoTest extends BaseTest {
     }
 
     @Test
+    public void testUpdataProductCategoryToNullById(){
+        int i = productDao.updataProductCategoryToNullById(15L, 9L);
+        System.out.println(i);
+    }
+
+    @Test
     public void testUpdataProduct(){
         Product product = new Product();
         Shop shop = new Shop();

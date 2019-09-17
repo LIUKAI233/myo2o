@@ -42,4 +42,12 @@ public interface ProductDao {
      * @return 商品数量
      */
     int selectCount(@Param("product")Product product);
+
+    /**
+     * 把符合条件的商品的商品类别置为空
+     * @param shopId 店铺id
+     * @param productCategoryId 商品类别id
+     * @return 影响的行数
+     */
+    int updataProductCategoryToNullById(@Param("shopId")Long shopId,@Param("productCategoryId")Long productCategoryId);
 }

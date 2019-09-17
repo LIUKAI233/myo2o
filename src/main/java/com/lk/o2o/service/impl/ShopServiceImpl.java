@@ -24,6 +24,13 @@ public class ShopServiceImpl implements ShopService {
     @Autowired
     private ShopDao shopDao;
 
+    /**
+     * 获取符合条件的店铺列表
+     * @param shopCondition 查询条件
+     * @param pageIndex 查询页数
+     * @param pageSize 一页多少条数据
+     * @return 处理结果
+     */
     @Override
     public ShopExecution getShopList(Shop shopCondition, int pageIndex, int pageSize) {
         int rowIndex = pageCalculator.calculator(pageIndex, pageSize);
@@ -39,11 +46,22 @@ public class ShopServiceImpl implements ShopService {
         return se;
     }
 
+    /**
+     * 根据id获取店铺信息
+     * @param shopId 店铺ID
+     * @return 店铺信息
+     */
     @Override
     public Shop getShopById(Long shopId) {
         return shopDao.queryByShopId(shopId);
     }
 
+    /**
+     * 更新店铺
+     * @param shop 店铺信息
+     * @param thunbnail 图片相关信息
+     * @return 处理结果
+     */
     @Override
     public ShopExecution updataShop(Shop shop, ImageHolder thunbnail) {
         InputStream shopImgInputStream = thunbnail.getImage();
@@ -74,6 +92,12 @@ public class ShopServiceImpl implements ShopService {
         }
     }
 
+    /**
+     * 添加店铺
+     * @param shop 店铺信息
+     * @param thunbnail 图片相关信息
+     * @return 处理结果
+     */
     @Override
     public ShopExecution addShop(Shop shop, ImageHolder thunbnail) {
 
@@ -103,6 +127,11 @@ public class ShopServiceImpl implements ShopService {
         return new ShopExecution(ShopStateEnum.SUCCESS,shop);
     }
 
+    /**
+     * 添加图片
+     * @param shop 店铺信息
+     * @param thunbnail 图片信息
+     */
     private void addShopImg(Shop shop, ImageHolder thunbnail) {
         //获取shop图片目录的相对路径
         String dest = FileUtil.getShopImagePath(shop.getShopId());

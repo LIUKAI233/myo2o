@@ -19,9 +19,11 @@ public class ShopDaoTest extends BaseTest {
     @Test
     public void testQueryShopList(){
         Shop shopCondition = new Shop();
-        PersonInfo owner = new PersonInfo();
-        owner.setUserId(8L);
-        shopCondition.setOwner(owner);
+        ShopCategory category = new ShopCategory();
+        ShopCategory parent = new ShopCategory();
+        parent.setShopCategoryId(10L);
+        category.setParent(parent);
+        shopCondition.setShopCategory(category);
         List<Shop> shopList = shopDao.queryShopList(shopCondition, 0, 5);
         int shopCount = shopDao.queryShopCount(shopCondition);
         System.out.println("shopList :"+shopList.size());
@@ -42,9 +44,9 @@ public class ShopDaoTest extends BaseTest {
         Area area = new Area();
         PersonInfo owner = new PersonInfo();
         ShopCategory shopCategory = new ShopCategory();
-        area.setAreaId(3);
+        area.setAreaId(3L);
         owner.setUserId(11L);
-        shopCategory.setShopCategoryId(12);
+        shopCategory.setShopCategoryId(12L);
         shop.setEnableStatus(1);
         shop.setCreateTime(new Date());
         shop.setAdvice("无");
@@ -59,9 +61,8 @@ public class ShopDaoTest extends BaseTest {
     @Test
     public void testUpdateShop(){
         Shop shop = new Shop();
-        shop.setShopId(28L);
-        shop.setShopName("newtest");
-        shop.setLastEditTime(new Date());
+        shop.setShopId(26L);
+        shop.setShopImg("\\upload\\images\\item\\shop\\26\\2017060609431259039.png");
         int i = shopDao.updateShop(shop);
         System.out.println(i);
     }

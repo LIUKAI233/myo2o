@@ -8,8 +8,8 @@ import java.util.List;
 public interface ShopCategoryDao {
     /**
      * 查询商铺列表
-     * @param shopCategoryCondition
-     * @return
+     * @param shopCategoryCondition 查询条件
+     * @return 符合条件的店铺列表
      */
     List<ShopCategory> queryShopCategory(@Param("shopCategoryCondition") ShopCategory shopCategoryCondition);
 }

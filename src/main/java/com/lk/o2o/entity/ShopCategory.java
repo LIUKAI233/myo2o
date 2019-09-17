@@ -3,7 +3,7 @@ package com.lk.o2o.entity;
 import java.util.Date;
 
 public class ShopCategory {
-    private Integer shopCategoryId;
+    private Long shopCategoryId;
     private String shopCategoryName;
     private String shopCategoryDesc;
     private String shopCategoryImg;
@@ -26,11 +26,11 @@ public class ShopCategory {
                 '}';
     }
 
-    public Integer getShopCategoryId() {
+    public Long getShopCategoryId() {
         return shopCategoryId;
     }
 
-    public void setShopCategoryId(Integer shopCategoryId) {
+    public void setShopCategoryId(Long shopCategoryId) {
         this.shopCategoryId = shopCategoryId;
     }
 
