@@ -60,6 +60,7 @@ public class ShopDetailController {
             modelMap.put("errMsg",e.getMessage());
             return modelMap;
         }
+        modelMap.put("success",true);
         return modelMap;
     }
 
@@ -111,7 +112,7 @@ public class ShopDetailController {
             productCategory.setProductCategoryId(productCategoryId);
             productCondition.setProductCategory(productCategory);
         }
-        if(productName != null && !productName.equals("") && !productName.equals("null")){
+        if(productName != null && !productName.equals("")){
             productCondition.setProductName(productName);
         }
         //返回前端展示的商品都是审核成功的商品
