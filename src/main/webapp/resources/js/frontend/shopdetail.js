@@ -19,16 +19,14 @@ $(function() {
             if (data.success) {
                 var shop = data.shop;
                 $('#shop-cover-pic').attr('src', shop.shopImg);
-                $('#shop-update-time').html(
-                    new Date(shop.lastEditTime)
-                        .Format("yyyy-MM-dd"));
+                $('#shop-update-time').html(new Date(shop.lastEditTime).Format("yyyy-MM-dd"));
                 $('#shop-name').html(shop.shopName);
                 $('#shop-desc').html(shop.shopDesc);
                 $('#shop-addr').html(shop.shopAddr);
                 $('#shop-phone').html(shop.phone);
 
                 var productCategoryList = data.productCategoryList;
-                var html = '';
+                var html = '<a href="#" class="button" data-product-search-id=""> 全部类别  </a>';
                 productCategoryList
                     .map(function(item, index) {
                         html += '<a href="#" class="button" data-product-search-id='
@@ -41,6 +39,7 @@ $(function() {
             }
         });
     }
+
     getSearchDivData();
 
     function addItems(pageSize, pageIndex) {
