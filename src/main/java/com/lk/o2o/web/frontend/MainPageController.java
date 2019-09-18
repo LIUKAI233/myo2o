@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/*关于首页的相关操作*/
 @Controller
 @RequestMapping("/frontend")
 public class MainPageController {

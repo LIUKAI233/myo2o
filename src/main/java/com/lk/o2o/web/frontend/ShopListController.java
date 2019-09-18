@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/*关于店铺的相关查询操作*/
 @RequestMapping(value = "/frontend",method = RequestMethod.GET)
 @Controller
 public class ShopListController {

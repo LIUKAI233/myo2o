@@ -14,6 +14,7 @@ $(function() {
 		var url = searchDivUrl + '?' + 'parentId=' + parentId;
 		$.getJSON(url,function(data) {
 			if (data.success) {
+				//遍历添加商铺类别
 				var shopCategoryList = data.shopCategoryList;
 				var html = '';
 				html += '<a href="#" class="button" data-category-id=""> 全部类别  </a>';
@@ -26,6 +27,7 @@ $(function() {
 									+ '</a>';
 						});
 				$('#shoplist-search-div').html(html);
+				//遍历添加区域类别
 				var selectOptions = '<option value="">全部街道</option>';
 				var areaList = data.areaList;
 				areaList.map(function(item, index) {
@@ -39,6 +41,7 @@ $(function() {
 	}
 	getSearchDivData();
 
+	//传入分页信息，添加商铺列表
 	function addItems(pageSize, pageIndex) {
 		// 生成新条目的HTML
 		var url = listUrl + '?' + 'pageIndex=' + pageIndex + '&pageSize='
@@ -47,8 +50,10 @@ $(function() {
 		loading = true;
 		$.getJSON(url, function(data) {
 			if (data.success) {
+				//获取返回商铺总数
 				maxItems = data.count;
 				var html = '';
+				//遍历添加商铺列表
 				data.shopList.map(function(item, index) {
 					html += '' + '<div class="card" data-shop-id="'
 							+ item.shopId + '">' + '<div class="card-header">'
@@ -68,6 +73,7 @@ $(function() {
 							+ '</div>';
 				});
 				$('.list-div').append(html);
+				//获取以添加的商铺信息数量
 				var total = $('.list-div .card').length;
 				if (total >= maxItems) {
 					// 加载完毕，则注销无限加载事件，以防不必要的加载
@@ -81,27 +87,37 @@ $(function() {
 			}
 		});
 	}
-	// 预先加载20条
+
+	// 预先加载10条
 	addItems(pageSize, pageNum);
 
+	//无限滚动加载
 	$(document).on('infinite', '.infinite-scroll-bottom', function() {
+		//若loading为true，则退出无限滚动加载
 		if (loading)
 			return;
+		//一页10条，页码+1
 		addItems(pageSize, pageNum);
 	});
 
 	$('.shop-list').on('click', '.card', function(e) {
+		//e.currentTarget 注册了监听点击事件的组件
 		var shopId = e.currentTarget.dataset.shopId;
+		//在当前页面打开URL，展示商品页面
 		window.location.href = '/myo2o/frontend/shopdetail?shopId=' + shopId;
 	});
 
 	$('#shoplist-search-div').on('click','.button',function(e) {
 		if (parentId) {// 如果传递过来的是一个父类下的子类
+			//e.target 实际触发了点击事件的组件
 			shopCategoryId = e.target.dataset.categoryId;
+			//判断当前点击的事件是否被点击过
 			if ($(e.target).hasClass('button-fill')) {
+				//点击过，移除button-fill这个class属性，改变css样式
 				$(e.target).removeClass('button-fill');
 				shopCategoryId = '';
 			} else {
+				//未点击过，添加button-fill这个class属性，改变css样式，并移除同级事件的class属性改变css样式
 				$(e.target).addClass('button-fill').siblings()
 						.removeClass('button-fill');
 			}
@@ -125,20 +141,25 @@ $(function() {
 
 	});
 
+	//点击搜索框，按模糊查询
 	$('#search').on('input', function(e) {
+		//为shopName赋值，把查询到的商铺列表置为空，重新查询
 		shopName = e.target.value;
 		$('.list-div').empty();
 		pageNum = 1;
 		addItems(pageSize, pageNum);
 	});
 
+	//更改区域选项
 	$('#area-search').on('change', function() {
+		//为areaId赋值，把查询到的商铺列表置为空，重新查询
 		areaId = $('#area-search').val();
 		$('.list-div').empty();
 		pageNum = 1;
 		addItems(pageSize, pageNum);
 	});
 
+	//点击开启弹窗
 	$('#me').click(function() {
 		$.openPanel('#panel-left-demo');
 	});

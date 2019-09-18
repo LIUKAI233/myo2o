@@ -109,7 +109,7 @@
         `priority`, `create_time`, `last_edit_time`, `enable_status`, `point`,`product_id`
         FROM tb_product
         <where>
-            <if test="product.productName != null">and product_name like %#{product.productName}% AND</if>
+            <if test="product.productName != null">and product_name like '%${product.productName}%' AND</if>
             <if test="product.enableStatus != null">and enable_status = #{product.enableStatus} AND</if>
             <if test="product.productId != null">and product_id = #{product.productId}</if>
             <if test="product.shop != null and product.shop.shopId != null">and shop_id = #{product.shop.shopId}</if>
