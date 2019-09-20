@@ -33,11 +33,12 @@ public class ProductDaoTest extends BaseTest {
         Shop shop = new Shop();
         shop.setShopId(20L);
         product.setProductId(17L);
-        product.setProductName("更改后的测试商品");
+        /*product.setProductName("更改后的测试商品");*/
         product.setShop(shop);
-        ProductCategory productCategory = new ProductCategory();
+        product.setEnableStatus(1);
+        /*ProductCategory productCategory = new ProductCategory();
         productCategory.setProductCategoryId(13L);
-        product.setProductCategory(productCategory);
+        product.setProductCategory(productCategory);*/
         int i = productDao.updataProduct(product);
         System.out.println(i);
     }

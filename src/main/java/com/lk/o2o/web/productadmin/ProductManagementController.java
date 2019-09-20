@@ -111,10 +111,14 @@ public class ProductManagementController {
     private Map<String,Object> modifyproduct(HttpServletRequest request){
         Map<String, Object> modelMap = new HashMap<>();
         //验证码校验
-        if(CodeUtil.checkVerifyCode(request)){
-            modelMap.put("success",false);
-            modelMap.put("errMsg","请输入正确的验证码");
-            return modelMap;
+        //判读是商品添加，还是上下架操作，若是后者，则不需要校验验证码
+        boolean statusChange = HttpServletRequestUtil.getBoolean(request,"statusChange");
+        if(!statusChange){
+            if(CodeUtil.checkVerifyCode(request)){
+                modelMap.put("success",false);
+                modelMap.put("errMsg","请输入正确的验证码");
+                return modelMap;
+            }
         }
         //商品缩略图
         ImageHolder thumbnailHolder = null;
@@ -187,10 +191,8 @@ public class ProductManagementController {
     @ResponseBody
     private Map<String,Object> addProduct(HttpServletRequest request){
         Map<String, Object> modelMap = new HashMap<>();
-        //判读是商品添加，还是上下架操作，若是后者，则不需要校验验证码
-        boolean statusChange = HttpServletRequestUtil.getBoolean(request,"statusChange");
         //验证码校验
-        if(!statusChange && CodeUtil.checkVerifyCode(request)){
+        if(CodeUtil.checkVerifyCode(request)){
             modelMap.put("success",false);
             modelMap.put("errMsg","请输入正确的验证码");
             return modelMap;
