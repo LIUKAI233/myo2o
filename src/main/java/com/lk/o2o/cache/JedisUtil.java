@@ -66,8 +66,13 @@ public class JedisUtil {
 		expire(key, expire);
 	}
 
+
 	// *******************************************Keys*******************************************//
 	public class Keys {
+
+		public Keys(JedisUtil jedisUtil) {
+
+		}
 
 		/**
 		 * 清空所有key   返回执行状态码
@@ -273,6 +278,10 @@ public class JedisUtil {
 	// *******************************************Sets*******************************************//
 	public class Sets {
 
+		public Sets(JedisUtil jedisUtil) {
+
+		}
+
 		/**
 		 * 向Set添加一条记录，如果member已存在返回0,否则返回1
 		 * 
@@ -472,6 +481,10 @@ public class JedisUtil {
 
 	// *******************************************Hash*******************************************//
 	public class Hash {
+
+		public Hash(JedisUtil jedisUtil) {
+
+		}
 
 		/**
 		 * 从hash中删除指定的存储
@@ -695,6 +708,10 @@ public class JedisUtil {
 
 	// *******************************************Strings*******************************************//
 	public class Strings {
+		public Strings(JedisUtil jedisUtil) {
+
+		}
+
 		/**
 		 * 根据key获取记录
 		 * 
@@ -935,6 +952,10 @@ public class JedisUtil {
 
 	// *******************************************Lists*******************************************//
 	public class Lists {
+		public Lists(JedisUtil jedisUtil) {
+
+		}
+
 		/**
 		 * List长度
 		 * 
