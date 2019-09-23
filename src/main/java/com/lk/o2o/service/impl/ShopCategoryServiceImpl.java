@@ -41,7 +41,7 @@ public class ShopCategoryServiceImpl implements ShopCategoryService {
         }else if(shopCategoryCondition != null && shopCategoryCondition.getParent() != null
                 && shopCategoryCondition.getParent().getShopCategoryId() != null){
             //列出所有该parent_id下的子类别
-            key = key +"_allparent";
+            key = key +"_parent"+shopCategoryCondition.getParent().getShopCategoryId();
         }else if (shopCategoryCondition != null){
             //列出所有的子类别
             key = key +"_allsecondlevel";
