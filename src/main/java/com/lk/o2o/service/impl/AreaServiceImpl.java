@@ -25,7 +25,6 @@ public class AreaServiceImpl implements AreaService {
     @Autowired
     private JedisUtil.Strings jedisStrings;
 
-    private static String AREALISTKEY = "areaList";
 
     @Override
     @Transactional

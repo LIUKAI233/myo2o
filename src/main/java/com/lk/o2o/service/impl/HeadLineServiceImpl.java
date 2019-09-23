@@ -24,7 +24,6 @@ public class HeadLineServiceImpl implements HeadLineService {
     @Autowired
     private JedisUtil.Strings jedisStrings;
 
-    private static String HeadLineListKEY = "headLineList";
 
     @Override
     //查询符合条件的头条集合

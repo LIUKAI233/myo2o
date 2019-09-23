@@ -24,7 +24,6 @@ public class ShopCategoryServiceImpl implements ShopCategoryService {
     @Autowired
     private JedisUtil.Strings jedisStrings;
 
-    private static String ShopCategoryListKEY = "shopCategoryList";
 
     @Override
     public List<ShopCategory> getShopCategory(ShopCategory shopCategoryCondition) {
