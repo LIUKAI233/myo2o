@@ -3,18 +3,18 @@ package com.lk.o2o.entity;
 import java.util.Date;
 
 public class LocalAuth {
-    private Integer localAuthId;
+    private Long localAuthId;
     private String username;
     private String password;
     private PersonInfo personInfo;
     private Date createTime;
     private Date lastEditTime;
 
-    public Integer getLocalAuthId() {
+    public Long getLocalAuthId() {
         return localAuthId;
     }
 
-    public void setLocalAuthId(Integer localAuthId) {
+    public void setLocalAuthId(Long localAuthId) {
         this.localAuthId = localAuthId;
     }
 
