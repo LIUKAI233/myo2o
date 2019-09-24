@@ -1,6 +1,7 @@
 package com.lk.o2o.dto;
 
 import com.lk.o2o.entity.LocalAuth;
+import com.lk.o2o.enums.LocalAuthStateEnum;
 
 import java.util.List;
 
@@ -15,18 +16,18 @@ public class LocalAuthExecution {
 
     }
 
-    public LocalAuthExecution(int state,String stateInfo){
-        this.state = state;
-        this.stateInfo = stateInfo;
+    public LocalAuthExecution(LocalAuthStateEnum localAuthStateEnum){
+        this.state = localAuthStateEnum.getState();
+        this.stateInfo = localAuthStateEnum.getStateInfo();
     }
 
-    public LocalAuthExecution(int state,String stateInfo,LocalAuth localAuth){
+    public LocalAuthExecution(LocalAuthStateEnum localAuthStateEnum,LocalAuth localAuth){
         this.state = state;
         this.stateInfo = stateInfo;
         this.localAuth = localAuth;
     }
 
-    public LocalAuthExecution(int state,String stateInfo,List<LocalAuth> localAuthList){
+    public LocalAuthExecution(LocalAuthStateEnum localAuthStateEnum,List<LocalAuth> localAuthList){
         this.state = state;
         this.stateInfo = stateInfo;
         this.localAuthList = localAuthList;

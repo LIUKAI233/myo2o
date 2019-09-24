@@ -22,12 +22,16 @@ import java.util.Map;
 @RequestMapping(value = "/frontend",method = RequestMethod.GET)
 @Controller
 public class ShopDetailController {
+    private final ShopService shopService;
+    private final ProductService productService;
+    private final ProductCategoryService productCategoryService;
+
     @Autowired
-    private ShopService shopService;
-    @Autowired
-    private ProductService productService;
-    @Autowired
-    private ProductCategoryService productCategoryService;
+    public ShopDetailController(ShopService shopService, ProductService productService, ProductCategoryService productCategoryService) {
+        this.shopService = shopService;
+        this.productService = productService;
+        this.productCategoryService = productCategoryService;
+    }
 
     @RequestMapping(value = "/listshopdetailpageinfo",method = RequestMethod.GET)
     @ResponseBody

@@ -18,10 +18,14 @@ import java.util.Map;
 @Controller
 @RequestMapping("/frontend")
 public class MainPageController {
+    private final ShopCategoryService shopCategoryService;
+    private final HeadLineService headLineService;
+
     @Autowired
-    private ShopCategoryService shopCategoryService;
-    @Autowired
-    private HeadLineService headLineService;
+    private MainPageController(ShopCategoryService shopCategoryService, HeadLineService headLineService) {
+        this.shopCategoryService = shopCategoryService;
+        this.headLineService = headLineService;
+    }
 
     @RequestMapping(value = "/listmainpageinfo",method = RequestMethod.GET)
     @ResponseBody

@@ -1,5 +1,6 @@
 package com.lk.o2o.service;
 
+import com.lk.o2o.dto.LocalAuthExecution;
 import com.lk.o2o.entity.LocalAuth;
 
 public interface LocalAuthService {
@@ -20,9 +21,19 @@ public interface LocalAuthService {
     LocalAuth getLocalAuthByUserId(Long userId);
 
     /**
-     *
-     * @param localAuth
-     * @return
+     * 注册信息
+     * @param localAuth 添加信息
+     * @return 处理结果
      */
-    int addLocalAuth(LocalAuth localAuth);
+    LocalAuthExecution addLocalAuth(LocalAuth localAuth);
+
+    /**
+     * 更改密码
+     * @param userId 用户id
+     * @param username 用户名
+     * @param password 密码
+     * @param newpassword 新密码
+     * @return 处理结果
+     */
+    LocalAuthExecution modifyLocalAuth(Long userId,String username,String password,String newpassword);
 }
