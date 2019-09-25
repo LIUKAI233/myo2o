@@ -38,9 +38,33 @@
                     <li>
                         <div class="item-content">
                             <div class="item-inner">
-                                <div class="item-title label">密码</div>
+                                <div class="item-title label">原密码</div>
                                 <div class="item-input">
-                                    <input type="text" id="password" placeholder="请输入密码">
+                                    <input type="text" id="password" placeholder="请输入旧密码">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <!--新密码 text-->
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">新密码</div>
+                                <div class="item-input">
+                                    <input type="text" id="newpassword" placeholder="请输入新密码">
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <!--新密码 text-->
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title label">新密码</div>
+                                <div class="item-input">
+                                    <input type="text" id="confirmpassword" placeholder="请确认新密码">
                                 </div>
                             </div>
                         </div>
@@ -48,7 +72,7 @@
 
                     <!--验证码-->
                     <li>
-                        <div class="item-content" id="VerifyCode" style="display: none">
+                        <div class="item-content">
                             <div class="item-inner">
                                 <div class="item-title label">验证码</div>
                                 <input type="text" id="j-kaptcha" placeholder="验证码">
@@ -64,7 +88,7 @@
                 <div class="row">
                     <div class="col-50"><a href="" onclick="javascript:history.back(-1)" class="button button-big button-fill button-danger">返回</a></div>
                     <div class="col-50"><a href="#" class="button button-big button-fill button-success"
-                                           id="submit">登录</a></div>
+                                           id="submit">修改</a></div>
                 </div>
             </div>
         </div>
@@ -75,6 +99,6 @@
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='UTF-8'></script>
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='UTF-8'></script>
 <script type="text/javascript" src="../resources/js/common/commonutil.js" charset="UTF-8"></script>
-<script type="text/javascript" src="../resources/js/local/login.js" charset="UTF-8"></script>
+<script type="text/javascript" src="../resources/js/local/changepsw.js" charset="UTF-8"></script>
 </body>
 </html>

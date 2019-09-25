@@ -17,7 +17,7 @@ $(function () {
             data: {
                 username : username,
                 password : password,
-                verifyCodeActul : verifyCodeActul,
+                verifyCodeActul : verifyCodeActul
             },
             async: false,
             cache: false,
@@ -35,7 +35,7 @@ $(function () {
                     $.toast("绑定失败！"+data.errMsg);
                 }
                 $('#kaptcha_img').click();
-                document.getElementById("kaptcha_img").value = "";
+                document.getElementById("j-kaptcha").value = "";
             }
         })
     })

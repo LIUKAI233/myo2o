@@ -18,3 +18,9 @@
     margin: 1%;
     overflow: hidden;
 }
+.panel-right{
+    background-color: white;
+}
+.panel-right a{
+    color: black;
+}

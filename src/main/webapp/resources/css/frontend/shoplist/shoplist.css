@@ -23,3 +23,9 @@
     height: 1.5rem;
     font-size: .7rem;
 }
+.panel-right{
+    background-color: white;
+}
+.panel-right a{
+    color: black;
+}

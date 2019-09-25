@@ -92,11 +92,16 @@ public class LocalAuthController {
         String newpassword = HttpServletRequestUtil.getString(request, "newpassword");
         //从session中获取用户登录信息(用户使用微信登录，就可以获取到用户信息)
         PersonInfo user = (PersonInfo) request.getSession().getAttribute("user");
+        if(user == null || user.getUserId() == null){
+            modelMap.put("success",false);
+            modelMap.put("errMsg","登录超时，请重新登录");
+            return modelMap;
+        }
         //判空，session不为空，新旧密码不一样
-        if(username != null && password != null && newpassword != null && user != null && user.getUserId() != null && !password.equals(newpassword)){
+        if(username != null && password != null && newpassword != null  && !password.equals(newpassword)){
             //先取出该登录信息绑定的账号，进行对比
             LocalAuth localAuthByUserId = localAuthService.getLocalAuthByUserId(user.getUserId());
-            if (localAuthByUserId == null || localAuthByUserId.getUsername().equals(username)){
+            if (localAuthByUserId == null || !localAuthByUserId.getUsername().equals(username)){
                 modelMap.put("success",false);
                 modelMap.put("errMsg","请输入正确的账号信息");
                 return modelMap;
