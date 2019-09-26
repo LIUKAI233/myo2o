@@ -11,6 +11,7 @@
         <result column="normal_price" property="normalPrice"/>
         <result column="promotion_price" property="promotionPrice"/>
         <result column="priority" property="priority"/>
+        <result column="point" property="point"/>
         <result column="create_time" property="createTime"/>
         <result column="last_edit_time" property="lastEditTime"/>
         <result column="enable_status" property="enableStatus"/>
@@ -38,13 +39,14 @@
     <insert id="insertProduct" parameterType="com.lk.o2o.entity.Product" useGeneratedKeys="true" keyProperty="productId"
             keyColumn="product_id">
         INSERT INTO tb_product(product_name, product_desc, img_addr, normal_price, promotion_price,
-                               priority, create_time, enable_status, product_category_id, shop_id)
+                               priority, point , create_time, enable_status, product_category_id, shop_id)
         VALUES (#{productName},
                 #{productDesc},
                 #{imgAddr},
                 #{normalPrice},
                 #{promotionPrice},
                 #{priority},
+                #{point},
                 #{createTime},
                 #{enableStatus},
                 #{productCategory.productCategoryId},
@@ -62,6 +64,7 @@
             <if test="promotionPrice != null">promotion_price = #{promotionPrice},</if>
             <if test="priority != null">priority = #{priority},</if>
             <if test="enableStatus != null">enable_status = #{enableStatus},</if>
+            <if test="point != null">point = #{point},</if>
             <if test="productCategory != null and productCategory.productCategoryId != null">product_category_id =
                 #{productCategory.productCategoryId},
             </if>
@@ -81,10 +84,10 @@
         p.normal_price,
         p.promotion_price,
         p.priority,
+        p.point,
         p.create_time,
         p.last_edit_time,
         p.enable_status,
-        p.point,
         p.product_category_id,
         p.shop_id,
         pm.product_img_id,

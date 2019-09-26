@@ -11,6 +11,7 @@ public class Product {
     private String imgAddr;
     private String normalPrice;
     private String promotionPrice;
+    private Integer point;
     private Integer priority;
     private Date createTime;
     private Date lastEditTime;
@@ -123,5 +124,13 @@ public class Product {
 
     public void setShop(Shop shop) {
         this.shop = shop;
+    }
+
+    public Integer getPoint() {
+        return point;
+    }
+
+    public void setPoint(Integer point) {
+        this.point = point;
     }
 }

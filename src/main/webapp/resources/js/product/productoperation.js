@@ -41,7 +41,7 @@ $(function () {
                 var product = data.product;
                 $('#product-name').val(product.productName);
                 $('#product-desc').val(product.productDesc);
-                $('#priority').val(product.priority);
+                $('#point').val(product.point);
                 $('#normal-price').val(product.normalPrice);
                 $('#promotion-price').val(product.promotionPrice);
                 //获取商品原本分类和商品所有分类
@@ -70,6 +70,7 @@ $(function () {
         var product = {};
         product.productName = $('#product-name').val();
         product.priority = $('#priority').val();
+        product.point = $('#point').val();
         product.normalPrice = $('#normal-price').val();
         product.promotionPrice = $('#promotion-price').val();
         product.productDesc = $('#product-desc').val();
@@ -111,6 +112,7 @@ $(function () {
             success: function (data) {
                 if (data.success) {
                     $.toast('提交成功！');
+                    window.location.href="/myo2o/productadmin/productmanage";
                 } else {
                     $.toast('提交失败！' + data.errMsg);
                 }

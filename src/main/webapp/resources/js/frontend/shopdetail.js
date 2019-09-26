@@ -109,12 +109,13 @@ $(function() {
         }
     });
 
+
     $('.list-div').on('change','.card',function(e) {
         var productId = e.currentTarget.dataset.productId;
         window.location.href = '/myo2o/frontend/productdetail?productId='+ productId;
     });
 
-    $('#search').on('input', function(e) {
+    $('#search').on('change', function(e) {
         productName = e.target.value;
         $('.list-div').empty();
         pageNum = 1;

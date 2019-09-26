@@ -64,8 +64,12 @@ public class ShopServiceImpl implements ShopService {
      */
     @Override
     public ShopExecution updataShop(Shop shop, ImageHolder thunbnail) {
-        InputStream shopImgInputStream = thunbnail.getImage();
-        String fileName = thunbnail.getImageName();
+        InputStream shopImgInputStream = null;
+        String fileName = null;
+        if(thunbnail != null) {
+            shopImgInputStream = thunbnail.getImage();
+            fileName = thunbnail.getImageName();
+        }
         if(shop == null || shop.getShopId() == null){
             return new ShopExecution(ShopStateEnum.NULL_SHOP);
         }
