@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lk.o2o.dao.UserAwardMapDao">
+    <resultMap id="userAwardResultMap" type="com.lk.o2o.entity.UserAwardMap">
+        <id property="userAwardId" column="user_award_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="usedStatus" column="used_status"/>
+        <result property="point" column="point"/>
+        <association property="user" column="user_id" javaType="com.lk.o2o.entity.PersonInfo">
+            <id property="userId" column="user_id"/>
+            <result property="name" column="name"/>
+        </association>
+        <association property="award" column="award_id" javaType="com.lk.o2o.entity.Award">
+            <id property="awardId" column="award_id"/>
+            <result property="awardName" column="award_name"/>
+        </association>
+        <association property="shop" column="shop_id" javaType="com.lk.o2o.entity.Shop">
+            <id property="shopId" column="shop_id"/>
+            <result property="shopName" column="shop_name"/>
+        </association>
+        <association property="operator" column="operator_id" javaType="com.lk.o2o.entity.PersonInfo">
+            <id property="userId" column="operator_id"/>
+            <result property="name" column="name"/>
+        </association>
+    </resultMap>
+
+    <select id="queryUserAwardMapList" resultMap="userAwardResultMap">
+        SELECT
+            u.user_id,
+            u.name,
+            a.award_id,
+            a.award_name,
+            s.shop_id,
+            s.shop_name,
+            oper.user_id,
+            oper.name,
+            uam.user_award_id,
+            uam.create_time,
+            uam.used_status,
+            uam.point
+        FROM tb_award a ,
+             tb_person_info u,
+             tb_shop s,
+             tb_person_info AS oper,
+             tb_user_award_map uam
+        <where>
+            u.user_id = uam.user_id
+            AND a.award_id = uam.award_id
+            AND s.shop_id = uam.shop_id
+            AND oper.user_id = uam.operator_id
+            /*按顾客信息，精确查询*/
+            <if test="userAwardMap != null and userAwardMap.user != null and userAwardMap.user.userId != null">
+                and uam.user_id = #{userAwardMap.user.userId}
+            </if>
+            /*按店铺精确查询*/
+            <if test="userAwardMap != null and userAwardMap.shop != null and userAwardMap.shop.shopId != null">
+                and uam.shop_id = #{userAwardMap.shop.shopId}
+            </if>
+            /*按顾客名模糊查询*/
+            <if test="userAwardMap != null and userAwardMap.user != null and userAwardMap.user.name != null">
+                and u.name like '%${userAwardMap.user.name}%'
+            </if>
+            /*按奖品名模糊查询*/
+            <if test="userAwardMap != null and userAwardMap.award != null and userAwardMap.award.awardName != null">
+                and a.award_name like '%${userAwardMap.award.awardName}%'
+            </if>
+            /*按奖品可用状态查询*/
+            <if test="userAwardMap != null and userAwardMap.usedStatus != null">
+                and uam.used_status = #{userAwardMap.usedStatus}
+            </if>
+        </where>
+        ORDER BY uam.create_time DESC
+        LIMIT #{rowIndex},#{pageSize};
+    </select>
+
+    <select id="queryUserAwardMapCount" resultType="int">
+        SELECT count(1)
+        FROM tb_award a ,
+        tb_person_info u,
+        tb_shop s,
+        tb_person_info AS oper,
+        tb_user_award_map uam
+        <where>
+            u.user_id = uam.user_id
+            AND a.award_id = uam.award_id
+            AND s.shop_id = uam.shop_id
+            AND oper.user_id = uam.operator_id
+            /*按顾客信息，精确查询*/
+            <if test="userAwardMap != null and userAwardMap.user != null and userAwardMap.user.userId != null">
+                and uam.user_id = #{userAwardMap.user.userId}
+            </if>
+            /*按店铺精确查询*/
+            <if test="userAwardMap != null and userAwardMap.shop != null and userAwardMap.shop.shopId != null">
+                and uam.shop_id = #{userAwardMap.shop.shopId}
+            </if>
+            /*按顾客名模糊查询*/
+            <if test="userAwardMap != null and userAwardMap.user != null and userAwardMap.user.name != null">
+                and u.name like '%${userAwardMap.user.name}%'
+            </if>
+            /*按奖品名模糊查询*/
+            <if test="userAwardMap != null and userAwardMap.award != null and userAwardMap.award.awardName != null">
+                and a.award_name like '%${userAwardMap.award.awardName}%'
+            </if>
+            /*按奖品可用状态查询*/
+            <if test="userAwardMap != null and userAwardMap.usedStatus != null">
+                and uam.used_status = #{userAwardMap.usedStatus}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryUserAwardMapById" resultMap="userAwardResultMap">
+        SELECT
+            u.user_id,
+            u.name,
+            a.award_id,
+            a.award_name,
+            s.shop_id,
+            s.shop_name,
+            oper.user_id,
+            oper.name,
+            uam.user_award_id,
+            uam.create_time,
+            uam.used_status,
+            uam.point
+        FROM tb_award a ,
+             tb_person_info u,
+             tb_shop s,
+             tb_person_info AS oper,
+             tb_user_award_map uam
+        WHERE u.user_id = uam.user_id
+            AND a.award_id = uam.award_id
+            AND s.shop_id = uam.shop_id
+            AND oper.user_id = uam.operator_id
+            AND uam.user_award_id = #{userAwardId}
+    </select>
+
+    <insert id="insertUserAwardMap" parameterType="com.lk.o2o.entity.UserAwardMap"
+            useGeneratedKeys="true" keyProperty="userAwardId" keyColumn="user_award_id">
+        INSERT INTO tb_user_award_map (user_id, award_id, shop_id, operator_id, create_time, used_status, point)
+        VALUES (
+                #{user.userId},
+                #{award.awardId},
+                #{shop.shopId},
+                #{operator.userId},
+                #{createTime},
+                #{usedStatus},
+                #{point}
+                )
+    </insert>
+
+    <update id="updateUserAwardMap" parameterType="com.lk.o2o.entity.UserAwardMap"
+            useGeneratedKeys="true" keyProperty="userAwardId" keyColumn="user_award_id">
+        UPDATE tb_user_award_map
+        SET used_status = #{usedStatus}
+        WHERE user_award_id = #{userAwardId}
+        AND user_id = #{user.userId}
+    </update>
+</mapper>

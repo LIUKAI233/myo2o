@@ -15,7 +15,7 @@ public class UserAwardMap {
     //领取消耗的积分
     private Integer point;
     //顾客信息实体类
-    private PersonInfo usew;
+    private PersonInfo user;
     //奖品信息实体类
     private Award award;
     //店铺信息实体类
@@ -55,12 +55,12 @@ public class UserAwardMap {
         this.point = point;
     }
 
-    public PersonInfo getUsew() {
-        return usew;
+    public PersonInfo getUser() {
+        return user;
     }
 
-    public void setUsew(PersonInfo usew) {
-        this.usew = usew;
+    public void setUser(PersonInfo user) {
+        this.user = user;
     }
 
     public Award getAward() {
