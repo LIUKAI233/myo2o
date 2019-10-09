@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lk.o2o.dao.UserShopMapDao">
+    <resultMap id="UserShopMapResult" type="com.lk.o2o.entity.UserShopMap">
+        <id column="user_shop_id" property="userShopId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="point" property="point"/>
+        <association property="user" column="user_id" javaType="com.lk.o2o.entity.PersonInfo">
+            <id column="user_id" property="userId"/>
+            <result column="name" property="name"/>
+        </association>
+        <association property="shop" column="shop_id" javaType="com.lk.o2o.entity.Shop">
+            <id column="shop_id" property="shopId"/>
+            <result column="shop_name" property="shopName"/>
+        </association>
+    </resultMap>
+
+    <select id="queryUserShopMapList" resultMap="UserShopMapResult">
+        SELECT
+            usm.user_shop_id,
+            usm.create_time,
+            usm.point,
+            s.shop_id,
+            s.shop_name,
+            p.user_id,
+            p.name
+        FROM tb_user_shop_map usm,
+             tb_shop s,
+             tb_person_info p
+        <where>
+            s.shop_id = usm.shop_id
+            AND p.user_id = usm.user_id
+            /*按顾客信息精确查询*/
+            <if test="userShopMap != null and userShopMap.user != null and userShopMap.user.userId != null">
+                AND p.user_id = #{userShopMap.user.userId}
+            </if>
+            /*按店铺信息精确查询*/
+            <if test="userShopMap != null and userShopMap.shop != null and userShopMap.shop.shopId != null">
+                AND s.shop_id = #{userShopMap.shop.shopId}
+            </if>
+            /*按顾客姓名模糊查询*/
+            <if test="userShopMap != null and userShopMap.user != null and userShopMap.user.name != null">
+                AND u.name like '%${userShopMap.user.name}%'
+            </if>
+            /*按店铺名称模糊查询*/
+            <if test="userShopMap != null and userShopMap.shop != null and userShopMap.shop.shopName != null">
+                AND s.shop_name like '%${userShopMap.shop.shopName}%'
+            </if>
+            /*按创建时间查询*/
+        </where>
+        LIMIT #{rowIndex},#{pageSize}
+    </select>
+
+    <select id="queryUserShopMapCount" resultType="int">
+        SELECT count(1)
+        FROM tb_user_shop_map usm,
+        tb_shop s,
+        tb_person_info p
+        <where>
+            s.shop_id = usm.shop_id
+            AND p.user_id = usm.user_id
+            /*按顾客信息精确查询*/
+            <if test="userShopMap != null and userShopMap.user != null and userShopMap.user.userId != null">
+                AND p.user_id = #{userShopMap.user.userId}
+            </if>
+            /*按店铺信息精确查询*/
+            <if test="userShopMap != null and userShopMap.shop != null and userShopMap.shop.shopId != null">
+                AND s.shop_id = #{userShopMap.shop.shopId}
+            </if>
+            /*按顾客姓名模糊查询*/
+            <if test="userShopMap != null and userShopMap.user != null and userShopMap.user.name != null">
+                AND u.name like '%${userShopMap.user.name}%'
+            </if>
+            /*按店铺名称模糊查询*/
+            <if test="userShopMap != null and userShopMap.shop != null and userShopMap.shop.shopName != null">
+                AND s.shop_name like '%${userShopMap.shop.shopName}%'
+            </if>
+            /*按创建时间查询*/
+        </where>
+    </select>
+
+    <select id="queryUserShopMapById" resultMap="UserShopMapResult">
+        SELECT
+            usm.user_shop_id,
+            usm.create_time,
+            usm.point,
+            s.shop_id,
+            s.shop_name,
+            p.user_id,
+            p.name
+        FROM tb_user_shop_map usm,
+             tb_shop s,
+             tb_person_info p
+        WHERE s.shop_id = usm.shop_id
+          AND p.user_id = usm.user_id
+          AND s.shop_id = #{shopId}
+          AND p.user_id = #{userId}
+    </select>
+
+    <insert id="insertUserShopMap" parameterType="com.lk.o2o.entity.UserShopMap" useGeneratedKeys="true" keyColumn="user_shop_id" keyProperty="userShopId">
+        INSERT INTO tb_user_shop_map
+            (user_id, shop_id, create_time, point)
+            VALUES
+            (
+             #{user.userId},
+             #{shop.shopId},
+             #{createTime},
+             #{point}
+            )
+    </insert>
+
+    <update id="updateUserShopMap" parameterType="com.lk.o2o.entity.UserShopMap" useGeneratedKeys="true" keyColumn="user_shop_id" keyProperty="userShopId">
+        UPDATE tb_user_shop_map
+        SET point = #{point}
+        WHERE user_id = #{user.userId}
+        AND shop_id = #{shop.shopId}
+    </update>
+</mapper>
