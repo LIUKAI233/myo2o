@@ -49,6 +49,9 @@
                 AND s.shop_name like '%${userShopMap.shop.shopName}%'
             </if>
             /*按创建时间查询*/
+            <if test="userShopMap != null and userShopMap.createTime != null">
+                AND usm.create_time &gt; #{userShopMap.createTime}
+            </if>
         </where>
         LIMIT #{rowIndex},#{pageSize}
     </select>
@@ -78,6 +81,9 @@
                 AND s.shop_name like '%${userShopMap.shop.shopName}%'
             </if>
             /*按创建时间查询*/
+            <if test="userShopMap != null and userShopMap.createTime != null">
+                AND usm.create_time &gt; #{userShopMap.createTime}
+            </if>
         </where>
     </select>
 
@@ -99,7 +105,8 @@
           AND p.user_id = #{userId}
     </select>
 
-    <insert id="insertUserShopMap" parameterType="com.lk.o2o.entity.UserShopMap" useGeneratedKeys="true" keyColumn="user_shop_id" keyProperty="userShopId">
+    <insert id="insertUserShopMap" parameterType="com.lk.o2o.entity.UserShopMap"
+            useGeneratedKeys="true" keyColumn="user_shop_id" keyProperty="userShopId">
         INSERT INTO tb_user_shop_map
             (user_id, shop_id, create_time, point)
             VALUES
@@ -111,7 +118,8 @@
             )
     </insert>
 
-    <update id="updateUserShopMap" parameterType="com.lk.o2o.entity.UserShopMap" useGeneratedKeys="true" keyColumn="user_shop_id" keyProperty="userShopId">
+    <update id="updateUserShopMap" parameterType="com.lk.o2o.entity.UserShopMap"
+            useGeneratedKeys="true" keyColumn="user_shop_id" keyProperty="userShopId">
         UPDATE tb_user_shop_map
         SET point = #{point}
         WHERE user_id = #{user.userId}

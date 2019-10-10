@@ -13,7 +13,7 @@ public class ShopAuthMap {
     //创建时间
     private Date createTime;
     //最近一次更新时间
-    private Date laseEditTime;
+    private Date lastEditTime;
     //商店实体类
     private Shop shop;
     //员工实体类
@@ -59,12 +59,12 @@ public class ShopAuthMap {
         this.createTime = createTime;
     }
 
-    public Date getLaseEditTime() {
-        return laseEditTime;
+    public Date getLastEditTime() {
+        return lastEditTime;
     }
 
-    public void setLaseEditTime(Date laseEditTime) {
-        this.laseEditTime = laseEditTime;
+    public void setLastEditTime(Date lastEditTime) {
+        this.lastEditTime = lastEditTime;
     }
 
     public Shop getShop() {
