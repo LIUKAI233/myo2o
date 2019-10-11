@@ -9,6 +9,7 @@ import com.lk.o2o.service.ShopAuthMapService;
 import com.lk.o2o.util.pageCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -51,6 +52,7 @@ public class ShopAuthMapServiceImpl implements ShopAuthMapService {
     }
 
     @Override
+    @Transactional
     public ShopAuthMapExecution addShopAuthMap(ShopAuthMap shopAuthMap) {
         //判断信息是否完整
         if(shopAuthMap != null && shopAuthMap.getEmployee() != null && shopAuthMap.getEmployee().getUserId() != null &&
@@ -75,6 +77,7 @@ public class ShopAuthMapServiceImpl implements ShopAuthMapService {
     }
 
     @Override
+    @Transactional
     public ShopAuthMapExecution modifyShopAuthMap(ShopAuthMap shopAuthMap) {
         //空值判断
         if(shopAuthMap != null && shopAuthMap.getShopAuthId() != null){

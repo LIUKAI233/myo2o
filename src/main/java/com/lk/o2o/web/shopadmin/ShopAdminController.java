@@ -10,16 +10,31 @@ public class ShopAdminController {
 
     @RequestMapping(value = "/shopoperation")
     public String shopOperation(){
+        //转发至店铺添加/修改界面
         return "shop/shopoperation";
     }
 
     @RequestMapping(value = "/shoplist")
     public String shopList(){
+        //转发至店铺列表展示界面
         return "shop/shoplist";
     }
 
     @RequestMapping(value = "/shopmanage")
     public String shopManage(){
+        //转发至店铺管理界面
         return "shop/shopmanage";
+    }
+
+    @RequestMapping(value = "/shopauthmanagement")
+    public String shopAuthManagement(){
+        //转发至店铺权限管理界面
+        return "shop/shopauthmanagement";
+    }
+
+    @RequestMapping(value = "/shopauthedit")
+    public String shopAuthEdit(){
+        //转发至店铺权限修改界面
+        return "shop/shopauthedit";
     }
 }
