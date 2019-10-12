@@ -30,6 +30,7 @@ public class ShopAuthManagementController {
         this.shopAuthMapService = shopAuthMapService;
     }
 
+
     //根据店铺id，获取该店铺下的所有员工授权信息
     @RequestMapping(value = "/listshopauthmaplistbyshopid",method = RequestMethod.GET)
     @ResponseBody
@@ -55,7 +56,7 @@ public class ShopAuthManagementController {
     }
 
     //根据id获取店铺授权信息
-    @RequestMapping(value = "getshopauthmapbyid",method = RequestMethod.GET)
+    @RequestMapping(value = "/getshopauthmapbyid",method = RequestMethod.GET)
     @ResponseBody
     private Map<String,Object> getShopAuthMapById(@RequestParam("shopAuthId")Long shopAuthId){
         Map<String, Object> modelMap = new HashMap<>();
@@ -72,7 +73,7 @@ public class ShopAuthManagementController {
     }
 
     //更新店铺授权信息
-    @RequestMapping(value = "modifyshopauthmap",method = RequestMethod.POST)
+    @RequestMapping(value = "/modifyshopauthmap",method = RequestMethod.POST)
     @ResponseBody
     private Map<String,Object> modifyShopAuthMap(String shopAuthMapStr,HttpServletRequest request){
         Map<String, Object> modelMap = new HashMap<>();
@@ -127,4 +128,5 @@ public class ShopAuthManagementController {
         //表示是店家本身，不能操作
         return shopAuthMap.getTitleFlag() == 0;
     }
+
 }

@@ -18,14 +18,6 @@
     </properties>
 
     <dependencies>
-        <!-- 图片处理相关 -->
-        <!-- https://mvnrepository.com/artifact/net.coobird/thumbnailator -->
-        <dependency>
-            <groupId>net.coobird</groupId>
-            <artifactId>thumbnailator</artifactId>
-            <version>0.4.8</version>
-        </dependency>
-
         <!-- 单元测试 -->
         <dependency>
             <groupId>junit</groupId>
@@ -214,12 +206,17 @@
             <artifactId>jackson-databind</artifactId>
             <version>2.8.7</version>
         </dependency>
-        <!-- 验证码工具 -->
-        <!-- https://mvnrepository.com/artifact/com.github.penggle/kaptcha -->
+        <!-- https://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
         <dependency>
-            <groupId>com.github.penggle</groupId>
-            <artifactId>kaptcha</artifactId>
-            <version>2.3.2</version>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+            <version>2.3.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>5.1.9.RELEASE</version>
         </dependency>
     </dependencies>
 
