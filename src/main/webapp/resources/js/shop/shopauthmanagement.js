@@ -9,6 +9,9 @@ $(function () {
            if(data.success){
                var shopAuthList = data.shopAuthMapList;
                var tempHtml = '';
+               if (shopAuthList == null){
+                   return;
+               }
                //遍历店铺权限数组
                shopAuthList.map(function (item, index) {
                    var textOp = '恢复';
@@ -49,7 +52,7 @@ $(function () {
     }
 
     /*
-     * 给a标签的click时间绑定上对应的方法，即点击带有edit的a标签就会跳转到授权编辑页面
+     * 给a标签的click事件绑定上对应的方法，即点击带有edit的a标签就会跳转到授权编辑页面
      * 点击带有status的a标签就会去更新该授权信息的状态
      */
     $('.shopauth-wrap').on('click','a',function (e) {
