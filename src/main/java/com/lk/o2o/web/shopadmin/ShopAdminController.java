@@ -37,4 +37,9 @@ public class ShopAdminController {
         //转发至店铺权限修改界面
         return "shop/shopauthedit";
     }
+
+    @RequestMapping(value = "/productbuycheck")
+    public String productBuyCheck(){
+        return "shop/productbuycheck";
+    }
 }
