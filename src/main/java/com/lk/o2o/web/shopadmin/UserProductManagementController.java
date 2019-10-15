@@ -1,7 +1,9 @@
 package com.lk.o2o.web.shopadmin;
 
+import com.lk.o2o.dto.EchartSeries;
 import com.lk.o2o.dto.UserProductMapExecution;
 import com.lk.o2o.entity.Product;
+import com.lk.o2o.entity.ProductSellDaily;
 import com.lk.o2o.entity.Shop;
 import com.lk.o2o.entity.UserProductMap;
 import com.lk.o2o.enums.UserProductMapEnum;
@@ -15,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 @RequestMapping("/shopamin")
@@ -62,6 +64,76 @@ public class UserProductManagementController {
         }else {
             modelMap.put("success",false);
             modelMap.put("errMsg","请输入完整的信息");
+        }
+        return modelMap;
+    }
+
+    @RequestMapping(value = "/listproductselldailyinfobyshop",method = RequestMethod.GET)
+    @ResponseBody
+    private Map<String,Object> listProductSellDailyInfoByShop(HttpServletRequest request){
+        Map<String, Object> modelMap = new HashMap<>();
+        //从session中获取店铺信息
+        Shop currentShop =(Shop) request.getSession().getAttribute("currentShop");
+        //空值判断
+        if (currentShop != null && currentShop.getShopId() != null){
+            //添加查询信息
+            ProductSellDaily productSellDailyCondition = new ProductSellDaily();
+            productSellDailyCondition.setShop(currentShop);
+            Calendar calendar = Calendar.getInstance();
+            //获取昨天的日期
+            calendar.add(Calendar.DATE,-1);
+            Date endTime = calendar.getTime();
+            //获取7天前的日期
+            calendar.add(Calendar.DATE,-6);
+            Date beginTime = calendar.getTime();
+            //查询符合商品记录的集合
+            List<ProductSellDaily> productSellDailyList = productSellDailyService.queryProductSellDailyList(productSellDailyCondition, beginTime, endTime);
+            //指定日期格式
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            //商品名列表，保证唯一性
+            HashSet<String> legendData = new HashSet<>();
+            //x轴数据
+            HashSet<String> xData = new HashSet<>();
+            //定义series
+            ArrayList<EchartSeries> series = new ArrayList<>();
+            //日销量列表
+            ArrayList<Integer> totalList = new ArrayList<>();
+            //当前商品名，默认为空
+            String currentProductName = "";
+            for (int i = 0 ; i < productSellDailyList.size() ; i++){
+                ProductSellDaily productSellDaily = productSellDailyList.get(i);
+                //自动去重
+                legendData.add(productSellDaily.getProduct().getProductName());
+                xData.add(sdf.format(productSellDaily.getCreateTime()));
+                if(!currentProductName.isEmpty() && !currentProductName.equals(productSellDaily.getProduct().getProductName())){
+                    //如果current不等于获取的商品名，或者已遍历到列表的末尾，且currentProductName不为空
+                    //则是遍历到下一个商品的日销量信息了，将前一轮遍历的信息放入series当中，
+                    //包括了商品名以及与商品名对应的统计日期以及当日销量
+                    EchartSeries es = new EchartSeries();
+                    es.setName(currentProductName);
+                    es.setData(totalList.subList(0,totalList.size()));
+                    series.add(es);
+                    //重置totalList
+                    totalList = new ArrayList<Integer>();
+                    currentProductName = productSellDaily.getProduct().getProductName();
+                    //继续添加新的值
+                    totalList.add(productSellDaily.getTotal());
+                }else{
+                    //如果还是当前的productId则继续添加新值
+                    totalList.add(productSellDaily.getTotal());
+                    currentProductName = productSellDaily.getProduct().getProductName();
+                }
+                //队列之末，需要将最后的一个商品销量信息也添加上
+                if(i == productSellDailyList.size()-1){
+                    EchartSeries es = new EchartSeries();
+                    es.setName(currentProductName);
+                    es.setData(totalList.subList(0,totalList.size()));
+                    series.add(es);
+                }
+            }
+        }else{
+            modelMap.put("success",false);
+            modelMap.put("errMsg","请重新登录");
         }
         return modelMap;
     }

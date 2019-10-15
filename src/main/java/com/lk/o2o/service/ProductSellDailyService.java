@@ -20,4 +20,5 @@ public interface ProductSellDailyService {
      * @return 查询到的集合
      */
     List<ProductSellDaily> queryProductSellDailyList(ProductSellDaily productSellDaily, Date beginTime,Date endTime);
+
 }
