@@ -30,7 +30,7 @@ public class AreaServiceImpl implements AreaService {
     @Transactional
     public List<Area> getAreaList() {
         String key = AREALISTKEY;
-        List<Area> areaList = null;
+        List<Area> areaList;
         //创建JSON工具对象
         ObjectMapper mapper = new ObjectMapper();
         //判断redis中是否有这个key

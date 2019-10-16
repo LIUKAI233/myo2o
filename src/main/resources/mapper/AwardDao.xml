@@ -8,6 +8,7 @@
         award_id,award_name,award_desc,award_img,point,priority,create_time,last_edit_time,enable_status
         FROM tb_award
         <where>
+            shop_id = #{awardCondition.shopId}
             <if test="awardCondition.awardName != null">and award_name like '%${awardCondition.awardName}%'</if>
             <if test="awardCondition.point != null">and point = #{awardCondition.point}</if>
             <if test="awardCondition.enableStatus != null">and enable_status = #{awardCondition.enableStatus}</if>

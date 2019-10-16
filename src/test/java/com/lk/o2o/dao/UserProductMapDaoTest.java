@@ -20,7 +20,10 @@ public class UserProductMapDaoTest extends BaseTest {
         PersonInfo user = new PersonInfo();
         user.setName("i");
         userProductMap.setUser(user);
-        List<UserProductMap> userProductMaps = userProductMapDao.queryUserProductMapList(null, 0, 5);
+        Shop shop = new Shop();
+        shop.setShopId(20L);
+        userProductMap.setShop(shop);
+        List<UserProductMap> userProductMaps = userProductMapDao.queryUserProductMapList(userProductMap, 0, 5);
         for (UserProductMap productMap : userProductMaps) {
             System.out.println(productMap.getOperator().getName());
         }

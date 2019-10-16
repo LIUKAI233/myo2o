@@ -1,6 +1,7 @@
 package com.lk.o2o.web.shopadmin;
 
 import com.lk.o2o.dto.EchartSeries;
+import com.lk.o2o.dto.EchartXaxis;
 import com.lk.o2o.dto.UserProductMapExecution;
 import com.lk.o2o.entity.Product;
 import com.lk.o2o.entity.ProductSellDaily;
@@ -21,7 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
-@RequestMapping("/shopamin")
+@RequestMapping("/shopadmin")
 public class UserProductManagementController {
 
     @Autowired
@@ -30,7 +31,7 @@ public class UserProductManagementController {
     @Autowired
     private ProductSellDailyService productSellDailyService;
 
-    @RequestMapping(value = "listuserproductmapbyshop",method = RequestMethod.GET)
+    @RequestMapping(value = "/listuserproductmapbyshop",method = RequestMethod.GET)
     @ResponseBody
     private Map<String,Object> listUserProductMapsByShop(HttpServletRequest request){
         Map<String, Object> modelMap = new HashMap<>();
@@ -131,6 +132,15 @@ public class UserProductManagementController {
                     series.add(es);
                 }
             }
+            modelMap.put("series",series);
+            modelMap.put("legendData",legendData);
+            //拼接出xAxis
+            List<EchartXaxis> xAxis = new ArrayList<>();
+            EchartXaxis exa = new EchartXaxis();
+            exa.setData(xData);
+            xAxis.add(exa);
+            modelMap.put("xAxis",xAxis);
+            modelMap.put("success",true);
         }else{
             modelMap.put("success",false);
             modelMap.put("errMsg","请重新登录");

@@ -20,8 +20,8 @@
             <result column="shop_name" property="shopName"/>
         </association>
         <association property="operator" column="operator_id" javaType="com.lk.o2o.entity.PersonInfo">
-            <id column="operator_id" property="operatorId"/>
-            <result column="name" property="name"/>
+            <id column="operator_id" property="userId"/>
+            <result column="operator_name" property="name"/>
         </association>
     </resultMap>
 
@@ -36,8 +36,8 @@
             p.product_name,
             s.shop_id,
             s.shop_name,
-            oper.user_id,
-            oper.name
+            oper.user_id AS operator_id,
+            oper.name AS operator_name
         FROM tb_person_info u,
              tb_product p,
              tb_shop s,
