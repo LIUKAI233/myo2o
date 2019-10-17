@@ -11,6 +11,7 @@ $(function () {
                 var tempHtml = '';
                 dataList.map(function (item, index) {
                     tempHtml += ''
+                        + '<div class="row row-product">'
                         + '<div class="row row-product-category now">'
                         + '<div class="col-40 product-category-name">'
                         + item.productCategoryName
@@ -20,7 +21,9 @@ $(function () {
                         + '</div>'
                         + '<div class="col-20"><a href="#" class="button delete" data-id="'
                         + item.productCategoryId
-                        + '">删除</a></div>' + '</div>';
+                        + '">删除</a></div>'
+                        + '</div>'
+                        + '</div>';
                 });
                 $('.category-wrap').append(tempHtml);
             }

@@ -42,4 +42,9 @@ public class ShopAdminController {
     public String productBuyCheck(){
         return "shop/productbuycheck";
     }
+
+    @RequestMapping(value = "awardmanagement")
+    public String awardManagement(){
+        return "shop/awardmanagement";
+    }
 }
