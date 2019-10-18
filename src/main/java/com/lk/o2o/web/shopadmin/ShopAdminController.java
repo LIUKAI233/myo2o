@@ -40,11 +40,25 @@ public class ShopAdminController {
 
     @RequestMapping(value = "/productbuycheck")
     public String productBuyCheck(){
+        //跳转到店铺销售记录页面
         return "shop/productbuycheck";
     }
 
-    @RequestMapping(value = "awardmanagement")
+    @RequestMapping(value = "/awardmanagement")
     public String awardManagement(){
+        //跳转到奖品管理页面
         return "shop/awardmanagement";
+    }
+
+    @RequestMapping(value = "/awardoperation")
+    public String awardOperation(){
+        //跳转到奖品编辑页面
+        return "shop/awardoperation";
+    }
+
+    @RequestMapping(value = "/userpoint")
+    public String userPoint(){
+        //跳转到顾客积分情况页面
+        return "shop/userpoint";
     }
 }

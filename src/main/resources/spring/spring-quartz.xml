@@ -3,9 +3,9 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
     http://www.springframework.org/schema/beans/spring-beans.xsd">
-
-    <!--使用MethodInvokingJobDetailFactoryBean，任务类可以不实现job接口，通过targetMethod指定调用的方法-->
-    <!--<bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+<!--
+    &lt;!&ndash;使用MethodInvokingJobDetailFactoryBean，任务类可以不实现job接口，通过targetMethod指定调用的方法&ndash;&gt;
+    <bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
         <property name="group" value="job_product_sell_daily_group"/>
         <property name="name" value="product_sell_daily_job"/>
         &lt;!&ndash;false表示上一个任务执行完成后，在开启新的任务&ndash;&gt;

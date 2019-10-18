@@ -16,7 +16,7 @@ $(function () {
                 productList.map(function (item, index) {
                     var textOp = '下架';
                     var contrayStatus = 0;
-                    if(item.enableStatus == 0){
+                    if(item.enableStatus === 0){
                         //若状态值为0，表明是已下架的商品，操作变为上架
                         textOp = '上架';
                         contrayStatus = 1;

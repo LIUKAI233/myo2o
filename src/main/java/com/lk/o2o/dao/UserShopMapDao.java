@@ -40,8 +40,8 @@ public interface UserShopMapDao {
 
     /**
      * 更新用户在某店铺的积分
-     * @param userShopMap
-     * @return
+     * @param userShopMap 店铺用户的积分记录
+     * @return 处理结果
      */
     int updateUserShopMap(UserShopMap userShopMap);
 }

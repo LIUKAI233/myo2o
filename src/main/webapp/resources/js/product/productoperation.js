@@ -85,7 +85,7 @@ $(function () {
         //获取缩略图文件流
         var thumbnail = $('#small-img')[0].files[0];
         var verifyCodeActul = $('#j-kaptcha').val();
-        if (verifyCodeActul == null || verifyCodeActul == "") {
+        if (verifyCodeActul == null || verifyCodeActul === "") {
             $.toast('请输入验证码!');
             return;
         }

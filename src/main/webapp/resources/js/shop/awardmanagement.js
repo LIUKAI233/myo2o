@@ -3,7 +3,7 @@ $(function () {
     var listUrl = '/myo2o/shopadmin/listawards?pageIndex=1&pageSize=99&awardName='+awardName;
     var modifyUrl = '/myo2o/shopadmin/modifyaward?awardId=';
 
-    getList()
+    getList();
 
     //获取奖品列表
     function getList() {
@@ -11,10 +11,10 @@ $(function () {
             if(data.success){
                 var awardList = data.awardList;
                 var tempHtml = '';
-                //默认定义状态为下架，执行上架操作，状态值要更改为1
-                var ops = '上架';
-                var contrayStatus = 1;
                 awardList.map(function (item, index) {
+                    //默认定义状态为下架，执行上架操作，状态值要更改为1
+                    var ops = '上架';
+                    var contrayStatus = 1;
                     if (item.enableStatus === 1){
                         //如果商品处于上架状态，执行下架操作，状态值为0
                         ops = '下架';
@@ -29,31 +29,27 @@ $(function () {
                                 + '<a class="view" data-award-id="'+item.awardId+'">预览</a>'
                                 + '</div></div>'
                 });
+                $('.award-wrap').html(tempHtml);
             }
-            $('.award-wrap').html(tempHtml);
         });
     }
 
     $('.award-wrap').on('click', 'a',function (e) {
+        var target = $(e.currentTarget);
         var awardId = e.target.dataset.awardId;
-        if($(e.target).hasClass('edit')){
+        if(target.hasClass('edit')){
             //则说明跳转到编辑页面
-            window.location.href = '/myo2o/shopadmin/awardedit?awardId='+awardId;
+            window.location.href = '/myo2o/shopadmin/awardoperation?awardId='+awardId;
         }
-        if ($(e.target).hasClass('changeOps')){
-            var contrayStatus = e.target.dataset.contrayStatus;
+        if (target.hasClass('changeOps')){
+            var contrayStatus = e.currentTarget.dataset.status;
             //则说明，执行上下架操作
             changeOps(awardId,contrayStatus);
         }
-        if ($(e.target).hasClass('view')){
+        if (target.hasClass('view')){
             //则说明跳转到预览页面
             window.location.href = '/myo2o/shopadmin/awarddetail?awardId='+awardId;
         }
-    });
-
-    $('#edit').click(function (id) {
-        //则说明跳转到预览页面
-        window.location.href = '/myo2o/shopadmin/awarddetail?awardId='+id;
     });
 
     /*更改上下架方法*/

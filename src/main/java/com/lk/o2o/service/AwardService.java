@@ -35,10 +35,9 @@ public interface AwardService {
      * 更改奖品信息
      * @param award 需要更改的奖品信息
      * @param imageHolder 奖品图片信息
-     * @param shopId 商铺id
      * @return 更改结果
      */
-    AwardExecution modifyAward(Award award,Long shopId,ImageHolder imageHolder);
+    AwardExecution modifyAward(Award award,ImageHolder imageHolder);
 
     /**
      * 删除对应的奖品信息

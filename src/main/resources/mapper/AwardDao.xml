@@ -54,13 +54,13 @@
     <update id="updateAward" useGeneratedKeys="true" keyProperty="awardId">
         UPDATE tb_award
         <set>
-            <if test="award.awardName != null">award_name = #{award.awardName}</if>
-            <if test="award.awardDesc != null">award_desc = #{award.awardDesc}</if>
-            <if test="award.awardImg != null">award_img = #{award.awardImg}</if>
-            <if test="award.point != null">point = #{award.point}</if>
-            <if test="award.priority != null">priority = #{award.priority}</if>
-            <if test="award.lastEditTime != null">last_edit_time = #{award.lastEditTime}</if>
-            <if test="award.enableStatus != null">enable_staatus = #{award.enableStatus}</if>
+            <if test="award.awardName != null">award_name = #{award.awardName},</if>
+            <if test="award.awardDesc != null">award_desc = #{award.awardDesc},</if>
+            <if test="award.awardImg != null">award_img = #{award.awardImg},</if>
+            <if test="award.point != null">point = #{award.point},</if>
+            <if test="award.priority != null">priority = #{award.priority},</if>
+            <if test="award.lastEditTime != null">last_edit_time = #{award.lastEditTime},</if>
+            <if test="award.enableStatus != null">enable_status = #{award.enableStatus},</if>
         </set>
         where award_id = #{award.awardId}
         AND shop_id = #{shopId}
